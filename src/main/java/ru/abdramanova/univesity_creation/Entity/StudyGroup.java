@@ -11,7 +11,7 @@ public class StudyGroup {
     )
     private int id;
     private String name;
-    @OneToMany(mappedBy = "studyGroup")
+    @OneToMany(mappedBy = "studyGroup", fetch = FetchType.LAZY)
     private List<Person> users;
 
 

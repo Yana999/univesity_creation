@@ -1,7 +1,10 @@
 package ru.abdramanova.univesity_creation.Entity;
 
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -26,7 +29,7 @@ public class Assessment {
     @Column(nullable = false)
     private int assessment;
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private ZonedDateTime time;
     @ManyToOne
     private Person user;

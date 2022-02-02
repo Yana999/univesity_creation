@@ -12,14 +12,13 @@ public class SubInGroup {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private ZonedDateTime deadline;
-    @OneToMany(mappedBy = "subjectInfo")
+    @OneToMany(mappedBy = "subjectInfo", fetch = FetchType.LAZY)
     private List<Subject> subjects;
     @ManyToOne
     private StudyGroup group;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Person teacher;
     @OneToMany(mappedBy = "subInfo")
     private List<Task> tasks;

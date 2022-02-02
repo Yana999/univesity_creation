@@ -35,7 +35,7 @@ public class Person {
     private String email;
     @ManyToOne
     private StudyGroup studyGroup;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private PersonRole personRole;
     public Person() {
     }

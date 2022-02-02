@@ -15,10 +15,10 @@ public class Subject {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private ControlFormDict controlForm;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SubInGroup subjectInfo;
 
     public Subject() {

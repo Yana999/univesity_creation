@@ -15,11 +15,10 @@ public class Task {
     @Column(nullable = false,length = 400)
     private String content;
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private ZonedDateTime deadline;
-    @OneToMany(mappedBy = "task",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Material> materials;
-    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Assessment> assessments;
     @ManyToOne
     private SubInGroup subInfo;
