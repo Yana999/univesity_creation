@@ -21,7 +21,7 @@ public class Assessment {
     )
     @TableGenerator(
             name =  "table-generator",
-            table = "table_identifier",
+            table = "Students_platform.table_identifier",
             pkColumnName = "table_name",
             valueColumnName = "assessment_id",
             initialValue = 2,
