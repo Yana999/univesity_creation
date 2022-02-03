@@ -8,9 +8,11 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
+@Table(schema = "Students_platform")
 public class SubInGroup {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
     private ZonedDateTime deadline;

@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
+@Table(schema = "Students_platform")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

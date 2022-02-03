@@ -6,6 +6,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 @Entity
+@Table(schema = "Students_platform")
 public class Person {
     @Id
     @GeneratedValue(

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(schema = "Students_platform")
 public class PersonRole {
 
     @Id

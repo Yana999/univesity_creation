@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.lang.annotation.Target;
 
 @Entity
+@Table(schema = "Students_platform")
 public class Subject {
 
     @Id

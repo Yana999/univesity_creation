@@ -6,8 +6,10 @@ import org.hibernate.annotations.Parent;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(schema = "Students_platform")
 public class ControlFormDict {
 
     @Id

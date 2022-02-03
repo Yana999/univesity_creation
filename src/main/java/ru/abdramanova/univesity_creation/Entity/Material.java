@@ -3,6 +3,7 @@ package ru.abdramanova.univesity_creation.Entity;
 import javax.persistence.*;
 
 @Entity
+@Table(schema = "Students_platform")
 public class Material {
 
     @Id

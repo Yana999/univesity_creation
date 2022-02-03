@@ -7,9 +7,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import javax.xml.validation.Schema;
 import java.time.ZonedDateTime;
 
 @Entity
+@Table(schema = "Students_platform")
 @Check(constraints = "assessment >= 0 AND assessment <= 100")
 public class Assessment {
     @Id
