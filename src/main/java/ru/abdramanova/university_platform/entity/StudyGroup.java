@@ -12,7 +12,7 @@ public class StudyGroup {
     private Integer id;
     @Column(nullable = false)
     private String name;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "studyGroup")
     private List<Person> people;
 
 
