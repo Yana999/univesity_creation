@@ -1,10 +1,9 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "Students_platform")
 public class PersonRole {
 
     @Id
@@ -16,7 +15,7 @@ public class PersonRole {
             name = "sequence-gen",
             sequenceName = "role_sequence"
     )
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @OneToMany(mappedBy = "personRole", orphanRemoval = true)
@@ -25,16 +24,17 @@ public class PersonRole {
     public PersonRole() {
     }
 
-    public PersonRole(String name, List<Person> people) {
+    public PersonRole(String name) {
         this.name = name;
-        this.people = people;
     }
 
-    public long getId() {
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

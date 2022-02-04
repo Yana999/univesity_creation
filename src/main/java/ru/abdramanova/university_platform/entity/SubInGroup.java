@@ -1,23 +1,20 @@
-package ru.abdramanova.univesity_creation.Entity;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(schema = "Students_platform")
 public class SubInGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false)
-    private ZonedDateTime deadline;
-    @OneToMany(mappedBy = "subjectInfo", fetch = FetchType.LAZY)
-    private List<Subject> subjects;
+    private LocalDateTime deadline;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subject subject;
     @ManyToOne
     private StudyGroup group;
     @OneToOne(fetch = FetchType.LAZY)
@@ -28,24 +25,19 @@ public class SubInGroup {
     public SubInGroup() {
     }
 
-    public SubInGroup(ZonedDateTime deadline, List<Subject> subjects, StudyGroup group, Person teacher, List<Task> tasks) {
+    public SubInGroup(LocalDateTime deadline, Subject subject, StudyGroup group, Person teacher) {
         this.deadline = deadline;
-        this.subjects = subjects;
+        this.subject = subject;
         this.group = group;
         this.teacher = teacher;
-        this.tasks = tasks;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getDeadline() {
-        return deadline;
     }
 
     public List<Task> getTasks() {
@@ -56,16 +48,20 @@ public class SubInGroup {
         this.tasks = tasks;
     }
 
-    public void setDeadline(ZonedDateTime deadline) {
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public StudyGroup getGroup() {

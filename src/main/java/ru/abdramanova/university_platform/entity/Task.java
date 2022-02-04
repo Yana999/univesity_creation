@@ -1,22 +1,22 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(schema = "Students_platform")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @Lob
     @Column(nullable = false,length = 400)
     private String content;
     @Column(nullable = false)
-    private ZonedDateTime deadline;
+    private LocalDateTime deadline;
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Material> materials;
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -27,20 +27,26 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, String content, ZonedDateTime deadline, List<Material> materials, List<Assessment> assessments, SubInGroup subInfo) {
+    public Task(String name, String content, LocalDateTime deadline, List<Material> materials, SubInGroup subInfo) {
         this.name = name;
         this.content = content;
         this.deadline = deadline;
         this.materials = materials;
-        this.assessments = assessments;
         this.subInfo = subInfo;
     }
 
-    public long getId() {
+    public Task(String name, String content, LocalDateTime deadline, SubInGroup subInfo) {
+        this.name = name;
+        this.content = content;
+        this.deadline = deadline;
+        this.subInfo = subInfo;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,11 +74,11 @@ public class Task {
         this.content = content;
     }
 
-    public ZonedDateTime getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(ZonedDateTime deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 

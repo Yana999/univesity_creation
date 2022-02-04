@@ -1,10 +1,9 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
-import java.lang.annotation.Target;
+import java.util.List;
 
 @Entity
-@Table(schema = "Students_platform")
 public class Subject {
 
     @Id
@@ -19,16 +18,15 @@ public class Subject {
     @OneToOne(fetch = FetchType.LAZY)
     private ControlFormDict controlForm;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private SubInGroup subjectInfo;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
+    private List<SubInGroup> subjectsInfo;
 
     public Subject() {
     }
 
-    public Subject(String name, ControlFormDict controlForm, SubInGroup subjectInfo) {
+    public Subject(String name, ControlFormDict controlForm) {
         this.name = name;
         this.controlForm = controlForm;
-        this.subjectInfo = subjectInfo;
     }
 
     public int getId() {
@@ -55,5 +53,11 @@ public class Subject {
         this.controlForm = controlForm;
     }
 
+    public List<SubInGroup> getSubjectsInfo() {
+        return subjectsInfo;
+    }
 
+    public void setSubjectsInfo(List<SubInGroup> subjectsInfo) {
+        this.subjectsInfo = subjectsInfo;
+    }
 }

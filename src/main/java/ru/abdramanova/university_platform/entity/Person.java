@@ -1,4 +1,4 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -6,7 +6,6 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "Students_platform")
 public class Person {
     @Id
     @GeneratedValue(
@@ -23,7 +22,7 @@ public class Person {
                     @Parameter(name = "optimizer", value = "pooled-lo")
             }
     )
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String surname;
     @Column(nullable = false)
@@ -41,6 +40,15 @@ public class Person {
     public Person() {
     }
 
+    public Person(String surname, String name, String secondName, String phoneNumber, String email, PersonRole personRole) {
+        this.surname = surname;
+        this.name = name;
+        SecondName = secondName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.personRole = personRole;
+    }
+
     public Person(String surname, String name, String secondName, String phoneNumber, String email, StudyGroup studyGroup, PersonRole personRole) {
         this.surname = surname;
         this.name = name;
@@ -51,11 +59,11 @@ public class Person {
         this.personRole = personRole;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

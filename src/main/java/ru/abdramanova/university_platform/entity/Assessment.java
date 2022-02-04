@@ -1,17 +1,14 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import org.hibernate.annotations.Check;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import javax.xml.validation.Schema;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(schema = "Students_platform")
 @Check(constraints = "assessment >= 0 AND assessment <= 100")
 public class Assessment {
     @Id
@@ -21,18 +18,18 @@ public class Assessment {
     )
     @TableGenerator(
             name =  "table-generator",
-            table = "Students_platform.table_identifier",
+            table = "table_identifier",
             pkColumnName = "table_name",
             valueColumnName = "assessment_id",
             initialValue = 2,
             allocationSize = 3
     )
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)
-    private ZonedDateTime time;
+    private LocalDateTime time;
     @ManyToOne
     private Person user;
     @ManyToOne
@@ -41,11 +38,13 @@ public class Assessment {
     public Assessment() {
     }
 
-    public long getId() {
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,11 +56,11 @@ public class Assessment {
         this.assessment = assessment;
     }
 
-    public ZonedDateTime getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(ZonedDateTime time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
@@ -73,9 +72,8 @@ public class Assessment {
         this.user = user;
     }
 
-    public Assessment(int assessment, ZonedDateTime time, Person user, Task task) {
+    public Assessment(int assessment, Person user, Task task) {
         this.assessment = assessment;
-        this.time = time;
         this.user = user;
         this.task = task;
     }

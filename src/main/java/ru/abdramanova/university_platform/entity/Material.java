@@ -1,9 +1,8 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "Students_platform")
 public class Material {
 
     @Id
@@ -11,9 +10,9 @@ public class Material {
             strategy = GenerationType.SEQUENCE
     )
     private long id;
-    @Column(nullable = false)
+    @Column
     private String name;
-    @Column(nullable = false)
+    @Column
     @Lob
     private byte[] file;
     @ManyToOne

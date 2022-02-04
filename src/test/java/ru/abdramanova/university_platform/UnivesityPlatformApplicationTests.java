@@ -1,4 +1,4 @@
-package ru.abdramanova.univesity_creation;
+package ru.abdramanova.university_platform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

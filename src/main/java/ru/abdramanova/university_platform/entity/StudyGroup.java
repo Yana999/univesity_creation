@@ -1,34 +1,38 @@
-package ru.abdramanova.univesity_creation.Entity;
+package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "Students_platform")
 public class StudyGroup {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    private int id;
+    private Integer id;
+    @Column(nullable = false)
     private String name;
-    @OneToMany(mappedBy = "studyGroup", fetch = FetchType.LAZY)
-    private List<Person> users;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Person> people;
 
 
     public StudyGroup() {
     }
 
-    public StudyGroup(String name, List<Person> users) {
+    public StudyGroup(String name) {
         this.name = name;
-        this.users = users;
     }
 
-    public int getId() {
+    public StudyGroup(String name, List<Person> users) {
+        this.name = name;
+        this.people = users;
+    }
+
+    public Integer tId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -41,10 +45,10 @@ public class StudyGroup {
     }
 
     public List<Person> getUsers() {
-        return users;
+        return people;
     }
 
     public void setUsers(List<Person> users) {
-        this.users = users;
+        this.people = users;
     }
 }
