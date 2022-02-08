@@ -12,16 +12,4 @@ import java.util.ArrayList;
 @Service
 public class StudyGroupService {
 
-    private StudyGroupRepository studyGroupRepository;
-
-
-    @Autowired
-    public void setStudyGroupRepository(StudyGroupRepository studyGroupRepository) {
-        this.studyGroupRepository = studyGroupRepository;
-    }
-
-    public void initGroup(){
-        studyGroupRepository.save(new StudyGroup("МПИ-21-1-7"));
-        studyGroupRepository.save(new StudyGroup("МИВТ-21-2-4"));
-    }
 }

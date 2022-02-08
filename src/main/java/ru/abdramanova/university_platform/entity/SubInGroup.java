@@ -13,7 +13,7 @@ public class SubInGroup {
     private Long id;
     @Column(nullable = false)
     private LocalDateTime deadline;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Subject subject;
     @ManyToOne
     private StudyGroup group;

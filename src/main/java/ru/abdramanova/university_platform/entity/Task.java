@@ -7,11 +7,8 @@ import java.util.List;
 
 @Entity
 public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
-    private String name;
+    @EmbeddedId
+    private TaskKey taskKey;
     @Lob
     @Column(nullable = false,length = 400)
     private String content;
@@ -27,31 +24,27 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, String content, LocalDateTime deadline, List<Material> materials, SubInGroup subInfo) {
-        this.name = name;
+    public Task(TaskKey taskKey, String content, LocalDateTime deadline, List<Material> materials, SubInGroup subInfo) {
+        this.taskKey = taskKey;
         this.content = content;
         this.deadline = deadline;
         this.materials = materials;
         this.subInfo = subInfo;
     }
 
-    public Task(String name, String content, LocalDateTime deadline, SubInGroup subInfo) {
-        this.name = name;
+    public Task(TaskKey taskKey, String content, LocalDateTime deadline, SubInGroup subInfo) {
+        this.taskKey = taskKey;
         this.content = content;
         this.deadline = deadline;
         this.subInfo = subInfo;
     }
 
-    public Long getId() {
-        return id;
+    public TaskKey getTaskKey() {
+        return taskKey;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
+    public void setTaskKey(TaskKey taskKey) {
+        this.taskKey = taskKey;
     }
 
     public SubInGroup getSubInfo() {
@@ -60,10 +53,6 @@ public class Task {
 
     public void setSubInfo(SubInGroup subInfo) {
         this.subInfo = subInfo;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getContent() {

@@ -15,7 +15,7 @@ public class Subject {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private ControlFormDict controlForm;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
@@ -28,6 +28,8 @@ public class Subject {
         this.name = name;
         this.controlForm = controlForm;
     }
+
+
 
     public int getId() {
         return id;

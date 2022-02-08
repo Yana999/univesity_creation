@@ -2,10 +2,9 @@ package ru.abdramanova.university_platform.entity;
 
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ControlFormDict {
@@ -15,8 +14,18 @@ public class ControlFormDict {
     private short id;
     @NaturalId
     private String name;
+    @OneToMany(mappedBy = "controlForm", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    List<Subject> subjects = new ArrayList<>();
 
     public ControlFormDict() {
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
     public ControlFormDict(String name) {
