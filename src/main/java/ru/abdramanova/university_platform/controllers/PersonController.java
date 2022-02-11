@@ -9,6 +9,7 @@ import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.service.PersonService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -42,6 +43,12 @@ public class PersonController {
         return personService.savePerson(person).get();
     }
 
+    @GetMapping("/student")
+    public ResponseEntity<List<Person>> getStudentBySurname(@RequestParam("surname") String surname){
+        List<Person> students = personService.findStudentBySurname(surname);
+        if(students.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(students);
+    }
 
     @PatchMapping
     public ResponseEntity<Person> updatePerson(@PathVariable("surname") String surname, @PathVariable("id") Long id){
@@ -53,7 +60,7 @@ public class PersonController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/student")
+    @GetMapping("/students")
     public ResponseEntity<Iterable<Person>> students(){
         return ResponseEntity.ok(personService.getStudents());
     }

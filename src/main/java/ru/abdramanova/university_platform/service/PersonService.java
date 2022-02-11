@@ -9,6 +9,7 @@ import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,6 +59,10 @@ public class PersonService {
         }
 
         return Optional.of(personRepository.save(person));
+    }
+
+    public List<Person> findStudentBySurname(String surname){
+        return personRepository.findStudentBySurname(surname);
     }
 
     public void deletePerson(Long id){
