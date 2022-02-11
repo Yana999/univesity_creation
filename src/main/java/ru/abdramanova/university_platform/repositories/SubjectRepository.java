@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 List<Subject> findByName(String name);
+Subject saveAndFlush(Subject entity);
 }

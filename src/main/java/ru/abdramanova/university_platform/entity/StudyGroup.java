@@ -1,5 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,7 +30,11 @@ public class StudyGroup {
         this.people = users;
     }
 
-    public Integer tId() {
+    public StudyGroup(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -44,6 +50,7 @@ public class StudyGroup {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Person> getUsers() {
         return people;
     }

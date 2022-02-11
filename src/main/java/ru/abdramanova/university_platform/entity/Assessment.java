@@ -38,8 +38,6 @@ public class Assessment {
     public Assessment() {
     }
 
-
-
     public Long getId() {
         return id;
     }

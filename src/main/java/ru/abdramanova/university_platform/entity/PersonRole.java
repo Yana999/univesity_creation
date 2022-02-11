@@ -1,5 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -24,6 +26,10 @@ public class PersonRole {
     public PersonRole() {
     }
 
+    public PersonRole(Long id) {
+        this.id = id;
+    }
+
     public PersonRole(String name) {
         this.name = name;
     }
@@ -46,11 +52,21 @@ public class PersonRole {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Person> getPeople() {
         return people;
     }
 
     public void setPeople(List<Person> people) {
         this.people = people;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonRole{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", people=" + people +
+                '}';
     }
 }
