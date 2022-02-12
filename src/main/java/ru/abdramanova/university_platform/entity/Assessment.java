@@ -5,6 +5,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
@@ -26,6 +30,8 @@ public class Assessment {
     )
     private Long id;
     @Column(nullable = false)
+    @Max(value = 100)
+    @Min(value = 0)
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)

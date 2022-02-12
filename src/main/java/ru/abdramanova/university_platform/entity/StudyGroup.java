@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,7 @@ public class StudyGroup {
     )
     private Integer id;
     @Column(nullable = false)
+    @NotNull
     private String name;
     @OneToMany(fetch = FetchType.LAZY,  mappedBy = "studyGroup")
     private List<Person> people;

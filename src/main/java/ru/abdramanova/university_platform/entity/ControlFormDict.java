@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.entity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class ControlFormDict {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short id;
     @NaturalId
+    @NotBlank
     private String name;
     @OneToMany(mappedBy = "controlForm", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<Subject> subjects = new ArrayList<>();

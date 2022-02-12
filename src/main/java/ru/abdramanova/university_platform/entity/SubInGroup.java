@@ -1,6 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ public class SubInGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    @Future
     private LocalDateTime deadline;
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Subject subject;

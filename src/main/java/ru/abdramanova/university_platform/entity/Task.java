@@ -1,6 +1,8 @@
 package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -10,9 +12,11 @@ public class Task {
     @EmbeddedId
     private TaskKey taskKey;
     @Lob
+    @NotNull
     @Column(nullable = false,length = 400)
     private String content;
     @Column(nullable = false)
+    @Future
     private LocalDateTime deadline;
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Material> materials;

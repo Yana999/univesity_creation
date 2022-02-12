@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,7 @@ public class PersonRole {
     )
     private Long id;
     @Column(nullable = false)
+    @NotNull
     private String name;
     @OneToMany(mappedBy = "personRole", orphanRemoval = true)
     private List<Person> people;

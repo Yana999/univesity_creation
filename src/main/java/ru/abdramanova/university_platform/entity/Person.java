@@ -4,13 +4,17 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
 
 @Entity
 public class Person extends Human{
 
     @Column(nullable = false, length = 16)
+    @Digits(integer = 11, fraction = 0)
     private String phoneNumber;
     @Column(nullable = false)
+    @Email
     private String email;
     @ManyToOne
     private StudyGroup studyGroup;

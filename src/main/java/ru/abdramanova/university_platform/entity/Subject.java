@@ -1,6 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class Subject {
     )
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String name;
 

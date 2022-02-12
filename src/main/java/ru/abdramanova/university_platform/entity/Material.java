@@ -1,6 +1,8 @@
 package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Material {
@@ -11,9 +13,11 @@ public class Material {
     )
     private long id;
     @Column
+    @NotBlank
     private String name;
     @Column
     @Lob
+    @NotNull
     private byte[] file;
     @ManyToOne
     private Task task;

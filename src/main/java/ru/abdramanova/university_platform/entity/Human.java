@@ -34,8 +34,10 @@ public abstract class Human {
     @NotBlank
     protected String surname;
     @Column(nullable = false)
+    @NotBlank
     protected String name;
     @Column(nullable = false)
+    @NotBlank
     protected String secondName;
 
     public Human(String surname, String name, String secondName) {

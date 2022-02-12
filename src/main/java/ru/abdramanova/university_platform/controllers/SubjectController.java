@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.service.SubjectInGroupService;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -20,11 +21,13 @@ public class SubjectController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Person>> studentsInGroup(@RequestParam Integer id){
+    public ResponseEntity<Iterable<Person>> studentsInGroup(@Valid @RequestParam Integer id){
         Optional<Iterable<Person>> students = subjectInGroupService.getStudentGroup(id);
         if(students.isPresent()){
             return ResponseEntity.ok(students.get());
         }
          return ResponseEntity.notFound().build();
     }
+
+
 }

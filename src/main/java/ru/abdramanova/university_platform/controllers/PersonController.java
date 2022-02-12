@@ -9,6 +9,7 @@ import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.service.PersonService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> personById(@PathVariable Long id){
+    public ResponseEntity<Person> personById(@Valid @PathVariable Long id){
         Optional<Person> personById = personService.getPersonById(id);
         if(personById.isPresent()){
             return ResponseEntity.ok(personById.get());
@@ -39,19 +40,19 @@ public class PersonController {
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
     @ResponseStatus(HttpStatus.CREATED)
-    public Person addPerson(@RequestBody Person person){
+    public Person addPerson(@Valid @RequestBody Person person){
         return personService.savePerson(person).get();
     }
 
     @GetMapping("/student")
-    public ResponseEntity<List<Person>> getStudentBySurname(@RequestParam("surname") String surname){
+    public ResponseEntity<List<Person>> getStudentBySurname(@Valid @RequestParam("surname") String surname){
         List<Person> students = personService.findStudentBySurname(surname);
         if(students.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(students);
     }
 
     @PatchMapping
-    public ResponseEntity<Person> updatePerson(@PathVariable("surname") String surname, @PathVariable("id") Long id){
+    public ResponseEntity<Person> updatePerson(@Valid @PathVariable("surname") String surname, @PathVariable("id") Long id){
         Optional<Person> person = personService.getPersonById(id);
         if(person.isPresent()){
             person.get().setSurname(surname);
@@ -67,7 +68,7 @@ public class PersonController {
 
     @DeleteMapping("/deletePerson/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void deletePerson(@PathVariable("id") Long id){
+    public void deletePerson(@Valid @PathVariable("id") Long id){
         personService.deletePerson(id);
     }
 
