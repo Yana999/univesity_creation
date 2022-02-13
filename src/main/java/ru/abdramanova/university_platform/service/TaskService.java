@@ -27,15 +27,8 @@ public class TaskService {
         return Optional.ofNullable(subInGroupRepository.findById(id).get().getTasks());
     }
 
-    public Task addTask(Task task){
+    public Task addOrUpdateTask(Task task){
        return taskRepository.save(task);
     }
 
-//    public Task updateTask(TaskKey id){
-//        Optional<Task> task = taskRepository.findById(id);
-//        if(task.isPresent()){
-//            return task.get().
-//        }
-//        return taskRepository.save(task);
-//    }
 }

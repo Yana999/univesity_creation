@@ -28,6 +28,7 @@ public class InitService implements ApplicationRunner {
     private final SubInGroupRepository subInGroupRepository;
     private final SubjectRepository subjectRepository;
     private final TaskRepository taskRepository;
+    private final ControlFormDictRepository controlFormDictRepository;
 
     @Autowired
     public InitService(AssessmentRepository assessmentRepository, ControlFormDictRepository controlFormDictRepository, MaterialRepository materialRepository, PersonRepository personRepository, PersonRoleRepository personRoleRepository, StudyGroupRepository studyGroupRepository, SubInGroupRepository subInGroupRepository, SubjectRepository subjectRepository, TaskRepository taskRepository) {
@@ -39,13 +40,14 @@ public class InitService implements ApplicationRunner {
         this.subInGroupRepository = subInGroupRepository;
         this.subjectRepository = subjectRepository;
         this.taskRepository = taskRepository;
+        this.controlFormDictRepository = controlFormDictRepository;
     }
 
     public void initDB() {
         try {
             ControlFormDict test = new ControlFormDict("зачет");
             ControlFormDict exam = new ControlFormDict("экзамен");
-
+            ControlFormDict test2 = new ControlFormDict("зачет с оценкой");
             Subject combinatorics = new Subject("Комбинаторика", exam);
             Subject english = new Subject("Английский", test);
             Subject quantum = new Subject("Квантовая информатика", test);
@@ -71,10 +73,10 @@ public class InitService implements ApplicationRunner {
 
             Material material1 = new Material("To task 1", this.getClass().getClassLoader().getResourceAsStream("Task1.txt").readAllBytes(), task1);
 
-
             Assessment assessment1 = new Assessment(56, person1, task1);
             Assessment assessment2 = new Assessment(71, person2, task1);
 
+            controlFormDictRepository.save(test2);
             subjectRepository.save(english);
             subjectRepository.save(quantum);
 

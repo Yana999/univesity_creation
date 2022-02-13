@@ -36,7 +36,7 @@ public class Assessment {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime time;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Person user;
     @ManyToOne
     private Task task;

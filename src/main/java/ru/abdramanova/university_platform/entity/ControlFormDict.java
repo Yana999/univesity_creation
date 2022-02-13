@@ -1,5 +1,6 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class ControlFormDict {
     public ControlFormDict() {
     }
 
+    @JsonIgnore
     public List<Subject> getSubjects() {
         return subjects;
     }

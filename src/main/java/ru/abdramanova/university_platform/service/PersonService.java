@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.PersonRole;
 import ru.abdramanova.university_platform.entity.StudyGroup;
+import ru.abdramanova.university_platform.repositories.AssessmentRepository;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
@@ -18,6 +19,7 @@ public class PersonService {
     private PersonRepository personRepository;
     private PersonRoleRepository personRoleRepository;
     private StudyGroupRepository studyGroupRepository;
+    private AssessmentRepository assessmentRepository;
 
     @Autowired
     public PersonService(PersonRepository personRepository, PersonRoleRepository personRoleRepository, StudyGroupRepository studyGroupRepository) {
@@ -59,6 +61,10 @@ public class PersonService {
         }
 
         return Optional.of(personRepository.save(person));
+    }
+
+    public Optional<List<Person>> findStudentsByAssessment(Integer assessment){
+        return Optional.ofNullable(assessmentRepository.findStudentsByAssessment(assessment));
     }
 
     public List<Person> findStudentBySurname(String surname){

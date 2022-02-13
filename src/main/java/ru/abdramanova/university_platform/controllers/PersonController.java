@@ -33,6 +33,12 @@ public class PersonController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/assessment")
+    public ResponseEntity<List<Person>> withAssessment (@Valid @RequestParam Integer assessment){
+        Optional<List<Person>> students = personService.findStudentsByAssessment(assessment);
+        return students.isPresent() ? ResponseEntity.ok(students.get()) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping()
     public ResponseEntity<Iterable<Person>> allPeople(){
         return ResponseEntity.ok(personService.getPeople());
@@ -51,8 +57,8 @@ public class PersonController {
         return ResponseEntity.ok(students);
     }
 
-    @PatchMapping
-    public ResponseEntity<Person> updatePerson(@Valid @PathVariable("surname") String surname, @PathVariable("id") Long id){
+    @PatchMapping("/student/{id}/{surname}")
+    public ResponseEntity<Person> updatePerson(@Valid @PathVariable("id") Long id, @PathVariable("surname") String surname){
         Optional<Person> person = personService.getPersonById(id);
         if(person.isPresent()){
             person.get().setSurname(surname);
