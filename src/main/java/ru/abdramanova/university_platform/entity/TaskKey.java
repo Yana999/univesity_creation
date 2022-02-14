@@ -2,18 +2,20 @@ package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Embeddable
 public class TaskKey implements Serializable {
-    private long id;
+
+    private Timestamp id;
     private String name;
 
     public TaskKey() {
     }
 
-    public TaskKey(long id, String name) {
-        this.id = id;
+    public TaskKey(String name) {
+        this.id = new Timestamp( System.currentTimeMillis() );
         this.name = name;
     }
 
@@ -30,11 +32,11 @@ public class TaskKey implements Serializable {
         return Objects.hash(id, name);
     }
 
-    public long getId() {
+    public Timestamp getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Timestamp id) {
         this.id = id;
     }
 

@@ -31,9 +31,9 @@ public class Assessment {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime time;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Person user;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Task task;
 
     public Assessment() {

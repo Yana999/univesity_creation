@@ -12,6 +12,7 @@ import ru.abdramanova.university_platform.repositories.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -42,15 +43,11 @@ public class InitService implements ApplicationRunner {
     }
 
     public void initDB() {
-        try {
             ControlFormDict test = new ControlFormDict("зачет");
             ControlFormDict exam = new ControlFormDict("экзамен");
             ControlFormDict test2 = new ControlFormDict("зачет с оценкой");
             Subject combinatorics = new Subject("Комбинаторика", exam);
             Subject english = new Subject("Английский", test);
-            Subject quantum = new Subject("Квантовая информатика", test);
-            test.getSubjects().add(english);
-            test.getSubjects().add(quantum);
 
             PersonRole teacher = new PersonRole("Преподаватель");
             PersonRole student = new PersonRole("Студент");
@@ -63,34 +60,40 @@ public class InitService implements ApplicationRunner {
             Person person2 = new Person("Новикова", "Полина", "Сергеевна", "89876543211", "PS1234@yandex.ru", mvt2, student);
             Person person3 = new Person("Битаров", "Костантин", "Эльбрусович", "891112223344", "TheNoneMan@gmai.com", mpi1, student);
             Person person4 = new Person("Бирина", "Венера", "Юрьевна", "89998887766", "BirinaV@mail.ru", teacher);
+            Person person5 = new Person("Емельянова", "Татьяна", "Викторовна", "89121234345", "Emelyanove@mail.ru", teacher);
 
             SubInGroup combInMpi1 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 23, 23, 59), combinatorics, mpi1, person4);
+            SubInGroup combInMvt2 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 20, 23, 59), english, mvt2, person5);
 
-            Task task1 = new Task(new TaskKey(1, "Задача 1"), "Решить задачи A - F контеста 1",
+            Task task1 = new Task(new TaskKey("Задача 1"), "Решить задачи A - F контеста 1",
                     LocalDateTime.of(2022, Month.MARCH, 11, 23, 59), combInMpi1);
+            Task task2 = new Task(new TaskKey("Задача 1"), "Решить задачи A - F контеста 1",
+                    LocalDateTime.of(2022, Month.MARCH, 15, 23, 59), combInMvt2);
+            Task task3 = new Task(new TaskKey("Задача 2"), "Решить задачи A - F контеста 1",
+                    LocalDateTime.of(2022, Month.MARCH, 17, 13, 59), combInMpi1);
+            Task task4 = new Task(new TaskKey("Задача 3"), "Решить задачи A - F контеста 1",
+                    LocalDateTime.of(2022, Month.MARCH, 21, 23, 50), combInMpi1);
+            Task task5 = new Task(new TaskKey("Задача 4"), "Решить задачи A - F контеста 1",
+                    LocalDateTime.of(2022, Month.MARCH, 1, 21, 59), combInMpi1);
 
             Assessment assessment1 = new Assessment(56, person1, task1);
             Assessment assessment2 = new Assessment(71, person2, task1);
+            Assessment assessment3 = new Assessment(51, person2, task2);
+            Assessment assessment4 = new Assessment(23, person1, task3);
+            Assessment assessment5 = new Assessment(90, person1, task4);
+            Assessment assessment6 = new Assessment(78, person1, task5);
+            Assessment assessment7 = new Assessment(88, person3, task3);
+            Assessment assessment8 = new Assessment(11, person3, task4);
 
-            controlFormDictRepository.save(test2);
-            subjectRepository.save(english);
-            subjectRepository.save(quantum);
 
-            personRoleRepository.save(teacher);
-            personRoleRepository.save(student);
-            personRoleRepository.save(admin);
 
-            studyGroupRepository.save(mpi1);
-            studyGroupRepository.save(mvt2);
-
-            personRepository.save(person1);
-            personRepository.save(person2);
-            personRepository.save(person3);
-            personRepository.save(person4);
-
-            subInGroupRepository.save(combInMpi1);
-
-            taskRepository.save(task1);
+            controlFormDictRepository.saveAll(List.of(exam, test, test2));
+            personRoleRepository.saveAll(List.of(teacher,student,admin));
+            studyGroupRepository.saveAll(List.of(mpi1, mvt2));
+            personRepository.saveAll(List.of(person1, person2,person3, person4, person5));
+            subInGroupRepository.saveAll(List.of(combInMpi1,combInMvt2));
+            taskRepository.saveAllAndFlush(List.of(task1, task2,task3,task4, task5));
+        assessmentRepository.saveAll(List.of(assessment1,assessment2, assessment3, assessment4, assessment5,assessment6, assessment7, assessment8));
             try{
                 byte[] materialFile =  Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("Task1.txt")).readAllBytes();
                 Material material1 = new Material("To task 1", materialFile, task1);
@@ -99,12 +102,6 @@ public class InitService implements ApplicationRunner {
                 System.out.println("Cannot read the file");
             }
 
-            assessmentRepository.save(assessment1);
-            assessmentRepository.save(assessment2);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -114,9 +111,12 @@ public class InitService implements ApplicationRunner {
 
     @EventListener
     public void handleContextStarted(ContextStartedEvent event) {
-        Person person1 = new Person("Арсентьев", "Александр", "Андреевич", "89776090228", "m1605456@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
-        Person person2 = new Person("Бердичевская", "Анна", "Григорьевна", "89257034136", "m1704475@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
-        personRepository.save(person1);
-        personRepository.save(person2);
+        Subject quantum = new Subject("Квантовая информатика", controlFormDictRepository.findById((short)2).get());
+        Person person6 = new Person("Арсентьев", "Александр", "Андреевич", "89776090228", "m1605456@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
+        Person person7 = new Person("Бердичевская", "Анна", "Григорьевна", "89257034136", "m1704475@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
+        personRepository.save(person6);
+        personRepository.save(person7);
+        subjectRepository.save(quantum);
     }
+
 }

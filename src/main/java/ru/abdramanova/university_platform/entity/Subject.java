@@ -17,7 +17,7 @@ public class Subject {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     private ControlFormDict controlForm;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")

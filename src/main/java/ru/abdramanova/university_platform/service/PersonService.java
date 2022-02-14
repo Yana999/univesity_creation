@@ -9,6 +9,8 @@ import ru.abdramanova.university_platform.repositories.AssessmentRepository;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
+
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +49,7 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public Optional<Person> savePerson(Person person){
+    public Optional<Person> savePerson( Person person){
         if(person.getStudyGroup().getName() == null){
             Optional<StudyGroup> studyGroup = studyGroupRepository.findById(person.getStudyGroup().getId());
             if(studyGroup.isPresent()){

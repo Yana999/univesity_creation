@@ -13,7 +13,7 @@ import ru.abdramanova.university_platform.repositories.TaskRepository;
 import ru.abdramanova.university_platform.service.*;
 
 @SpringBootApplication
-public class UnivesityPlatformApplication implements CommandLineRunner {
+public class UnivesityPlatformApplication {
 
     @Autowired
     private InitService initService;
@@ -23,11 +23,5 @@ public class UnivesityPlatformApplication implements CommandLineRunner {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(UnivesityPlatformApplication.class, args);
         context.start();
-    }
-
-    @Override
-    public void run(String... strings) {
-//initService.initDB();
-
     }
 }

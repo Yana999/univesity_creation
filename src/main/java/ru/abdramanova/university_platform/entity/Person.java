@@ -1,17 +1,18 @@
 package ru.abdramanova.university_platform.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.*;
 
 @Entity
 public class Person extends Human{
 
     @Column(nullable = false, length = 16)
-    @Digits(integer = 11, fraction = 0)
+    @NotBlank(message = "please, write phone number")
     private String phoneNumber;
     @Column(nullable = false)
     @Email
+    @NotBlank(message = "email is required")
+    @NotEmpty
     private String email;
     @ManyToOne
     private StudyGroup studyGroup;

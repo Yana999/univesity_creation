@@ -20,7 +20,7 @@ public class Task {
     private LocalDateTime deadline;
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Material> materials;
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", orphanRemoval = true)
     private List<Assessment> assessments;
     @ManyToOne
     private SubInGroup subInfo;

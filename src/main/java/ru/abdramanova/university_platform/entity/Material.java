@@ -19,8 +19,8 @@ public class Material {
     @Lob
     @NotNull
     private byte[] file;
-//    @ManyToOne
-//    private Task task;
+    @ManyToOne
+    private Task task;
 
     public Material() {
     }
@@ -28,7 +28,7 @@ public class Material {
     public Material(String name, byte[] file, Task task) {
         this.name = name;
         this.file = file;
-        //this.task = task;
+        this.task = task;
     }
 
     public long getId() {
@@ -55,5 +55,11 @@ public class Material {
         this.file = file;
     }
 
+    public Task getTask() {
+        return task;
+    }
 
+    public void setTask(Task task) {
+        this.task = task;
+    }
 }

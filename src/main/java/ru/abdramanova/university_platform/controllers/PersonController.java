@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.service.PersonService;
@@ -30,7 +31,7 @@ public class PersonController {
 
     //выборка по id
     @GetMapping("/{id}")
-    public ResponseEntity<Person> personById(@Valid @PathVariable Long id){
+    public ResponseEntity<Person> personById(@PathVariable Long id){
         return  personService.getPersonById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -38,21 +39,20 @@ public class PersonController {
 
     // выборка по фамилии в репозитории запрос Query
     @GetMapping("/student")
-    public ResponseEntity<List<Person>> getStudentBySurname(@Valid @RequestParam("surname") String surname){
+    public ResponseEntity<List<Person>> getStudentBySurname(@RequestParam("surname") String surname){
         return personService.findStudentBySurname(surname)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //выборка всех студентов
-    @GetMapping("/student")
-    public ResponseEntity<Iterable<Person>> students(){
-        return ResponseEntity.ok(personService.getStudents());
-    }
+//    //выборка всех студентов
+//    @GetMapping("/student")
+//    public ResponseEntity<Iterable<Person>> getAllStudents(){
+//        return ResponseEntity.ok(personService.getStudents());
+//    }
 
     //добавление и полное обновление данных о человеке
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Person> addPerson(@Valid @RequestBody Person person){
         if(personService.savePerson(person).isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).build();

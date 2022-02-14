@@ -32,6 +32,4 @@ public class SubjectController {
     public ResponseEntity<List<ControlFormDict>> getControlForms(@RequestParam Integer page){
         return ResponseEntity.ok(subjectInGroupService.getContrForm(page, 2).getContent());
     }
-
-
 }
