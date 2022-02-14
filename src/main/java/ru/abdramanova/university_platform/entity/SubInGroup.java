@@ -3,7 +3,6 @@ package ru.abdramanova.university_platform.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity

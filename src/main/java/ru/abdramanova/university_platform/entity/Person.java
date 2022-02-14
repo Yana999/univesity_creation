@@ -1,8 +1,5 @@
 package ru.abdramanova.university_platform.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;

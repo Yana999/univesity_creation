@@ -1,12 +1,10 @@
 package ru.abdramanova.university_platform.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Person;
-import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.service.PersonService;
 
 import javax.validation.Valid;
@@ -17,66 +15,74 @@ import java.util.Optional;
 @RequestMapping("/person")
 public class PersonController {
 
-    private PersonService personService;
+    private final PersonService personService;
 
     @Autowired
-    public PersonController(PersonService personService, PersonRepository personRepository) {
+    public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Person> personById(@Valid @PathVariable Long id){
-        Optional<Person> personById = personService.getPersonById(id);
-        if(personById.isPresent()){
-            return ResponseEntity.ok(personById.get());
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/assessment")
-    public ResponseEntity<List<Person>> withAssessment (@Valid @RequestParam Integer assessment){
-        Optional<List<Person>> students = personService.findStudentsByAssessment(assessment);
-        return students.isPresent() ? ResponseEntity.ok(students.get()) : ResponseEntity.notFound().build();
-    }
-
+    //выборка всех людей
     @GetMapping()
     public ResponseEntity<Iterable<Person>> allPeople(){
         return ResponseEntity.ok(personService.getPeople());
     }
 
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    @ResponseStatus(HttpStatus.CREATED)
-    public Person addPerson(@Valid @RequestBody Person person){
-        return personService.savePerson(person).get();
+    //выборка по id
+    @GetMapping("/{id}")
+    public ResponseEntity<Person> personById(@Valid @PathVariable Long id){
+        return  personService.getPersonById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // выборка по фамилии в репозитории запрос Query
     @GetMapping("/student")
     public ResponseEntity<List<Person>> getStudentBySurname(@Valid @RequestParam("surname") String surname){
-        List<Person> students = personService.findStudentBySurname(surname);
-        if(students.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(students);
+        return personService.findStudentBySurname(surname)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/student/{id}/{surname}")
-    public ResponseEntity<Person> updatePerson(@Valid @PathVariable("id") Long id, @PathVariable("surname") String surname){
+    //выборка всех студентов
+    @GetMapping("/student")
+    public ResponseEntity<Iterable<Person>> students(){
+        return ResponseEntity.ok(personService.getStudents());
+    }
+
+    //добавление и полное обновление данных о человеке
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Person> addPerson(@Valid @RequestBody Person person){
+        if(personService.savePerson(person).isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.internalServerError().build();
+    }
+
+    //обновлене фамилии человека по его id
+    @PatchMapping("/{id}")
+    public ResponseEntity<Person> updatePerson(@Valid @PathVariable("id") Long id, @RequestParam("surname") String surname){
         Optional<Person> person = personService.getPersonById(id);
         if(person.isPresent()){
             person.get().setSurname(surname);
             return  ResponseEntity.ok(personService.updatePerson(person.get()));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/students")
-    public ResponseEntity<Iterable<Person>> students(){
-        return ResponseEntity.ok(personService.getStudents());
-    }
-
-    @DeleteMapping("/deletePerson/{id}")
+    //удаление человека по id
+    @DeleteMapping("/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void deletePerson(@Valid @PathVariable("id") Long id){
         personService.deletePerson(id);
     }
 
-
+    // выборка людей из группы с определенными оценками
+    @GetMapping("/assessment")
+    public ResponseEntity<List<Person>> withAssessment (@Valid @RequestParam Integer assessment){
+        return personService.findStudentsByAssessment(assessment)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

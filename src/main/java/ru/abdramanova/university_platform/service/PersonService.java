@@ -9,23 +9,24 @@ import ru.abdramanova.university_platform.repositories.AssessmentRepository;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
-
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PersonService {
 
-    private PersonRepository personRepository;
-    private PersonRoleRepository personRoleRepository;
-    private StudyGroupRepository studyGroupRepository;
-    private AssessmentRepository assessmentRepository;
+    private final PersonRepository personRepository;
+    private final PersonRoleRepository personRoleRepository;
+    private final StudyGroupRepository studyGroupRepository;
+    private final AssessmentRepository assessmentRepository;
 
     @Autowired
-    public PersonService(PersonRepository personRepository, PersonRoleRepository personRoleRepository, StudyGroupRepository studyGroupRepository) {
+    public PersonService(PersonRepository personRepository, PersonRoleRepository personRoleRepository, StudyGroupRepository studyGroupRepository, AssessmentRepository assessmentRepository) {
         this.personRepository = personRepository;
         this.personRoleRepository = personRoleRepository;
         this.studyGroupRepository = studyGroupRepository;
+        this.assessmentRepository = assessmentRepository;
     }
 
     public Iterable<Person> getPeople(){
@@ -37,7 +38,9 @@ public class PersonService {
     }
 
     public Iterable<Person> getStudents(){
-        return personRoleRepository.findById(2L).get().getPeople();
+        return personRoleRepository.findById(2L)
+                .map(PersonRole::getPeople)
+                .orElseGet(Collections::emptyList);
     }
 
     public Person updatePerson(Person person){
@@ -67,7 +70,7 @@ public class PersonService {
         return Optional.ofNullable(assessmentRepository.findStudentsByAssessment(assessment));
     }
 
-    public List<Person> findStudentBySurname(String surname){
+    public Optional<List<Person>> findStudentBySurname(String surname){
         return personRepository.findStudentBySurname(surname);
     }
 

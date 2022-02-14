@@ -1,8 +1,6 @@
 package ru.abdramanova.university_platform.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.persistence.*;
 
 @MappedSuperclass
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 public abstract class Human {
 

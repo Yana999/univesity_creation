@@ -2,15 +2,10 @@ package ru.abdramanova.university_platform.entity;
 
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Check(constraints = "assessment >= 0 AND assessment <= 100")

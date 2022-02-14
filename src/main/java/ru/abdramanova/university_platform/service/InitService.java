@@ -1,20 +1,18 @@
 package ru.abdramanova.university_platform.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import ru.abdramanova.university_platform.entity.*;
 import ru.abdramanova.university_platform.repositories.*;
 
-import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Objects;
 
 
 @Service
@@ -71,8 +69,6 @@ public class InitService implements ApplicationRunner {
             Task task1 = new Task(new TaskKey(1, "Задача 1"), "Решить задачи A - F контеста 1",
                     LocalDateTime.of(2022, Month.MARCH, 11, 23, 59), combInMpi1);
 
-            Material material1 = new Material("To task 1", this.getClass().getClassLoader().getResourceAsStream("Task1.txt").readAllBytes(), task1);
-
             Assessment assessment1 = new Assessment(56, person1, task1);
             Assessment assessment2 = new Assessment(71, person2, task1);
 
@@ -95,6 +91,13 @@ public class InitService implements ApplicationRunner {
             subInGroupRepository.save(combInMpi1);
 
             taskRepository.save(task1);
+            try{
+                byte[] materialFile =  Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("Task1.txt")).readAllBytes();
+                Material material1 = new Material("To task 1", materialFile, task1);
+                materialRepository.save(material1);
+            }catch (IOException e){
+                System.out.println("Cannot read the file");
+            }
 
             assessmentRepository.save(assessment1);
             assessmentRepository.save(assessment2);
@@ -105,7 +108,7 @@ public class InitService implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args){
         initDB();
     }
 
