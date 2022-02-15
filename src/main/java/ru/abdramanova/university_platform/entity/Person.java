@@ -7,12 +7,11 @@ import javax.validation.constraints.*;
 public class Person extends Human{
 
     @Column(nullable = false, length = 16)
-    @NotBlank(message = "please, write phone number")
+    @Digits(integer = 11, fraction = 0)
     private String phoneNumber;
     @Column(nullable = false)
     @Email
     @NotBlank(message = "email is required")
-    @NotEmpty
     private String email;
     @ManyToOne
     private StudyGroup studyGroup;

@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Person;
@@ -53,11 +54,13 @@ public class PersonController {
 
     //добавление и полное обновление данных о человеке
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public ResponseEntity<Person> addPerson(@Valid @RequestBody Person person){
-        if(personService.savePerson(person).isPresent()){
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Person> addPerson(@RequestBody @Valid Person person,  Errors errors){
+        if(!errors.hasErrors()){
+            if(personService.savePerson(person).isPresent()){
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
         }
-        return ResponseEntity.internalServerError().build();
+        return ResponseEntity.badRequest().build();
     }
 
     //обновлене фамилии человека по его id

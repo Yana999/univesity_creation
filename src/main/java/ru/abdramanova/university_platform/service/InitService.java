@@ -58,7 +58,7 @@ public class InitService implements ApplicationRunner {
 
             Person person1 = new Person("Абдраманова", "Яна", "Расимовна", "89628569064", "Abdramanova.yana@yandex.ru", mpi1, student);
             Person person2 = new Person("Новикова", "Полина", "Сергеевна", "89876543211", "PS1234@yandex.ru", mvt2, student);
-            Person person3 = new Person("Битаров", "Костантин", "Эльбрусович", "891112223344", "TheNoneMan@gmai.com", mpi1, student);
+            Person person3 = new Person("Битаров", "Костантин", "Эльбрусович", "89112223344", "TheNoneMan@gmai.com", mpi1, student);
             Person person4 = new Person("Бирина", "Венера", "Юрьевна", "89998887766", "BirinaV@mail.ru", teacher);
             Person person5 = new Person("Емельянова", "Татьяна", "Викторовна", "89121234345", "Emelyanove@mail.ru", teacher);
 
