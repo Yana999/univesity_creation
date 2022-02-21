@@ -10,7 +10,6 @@ import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
 
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +75,13 @@ public class PersonService {
         return personRepository.findStudentBySurname(surname);
     }
 
+    public Optional<Person> findStudentByLogin(String login){
+        return personRepository.findPersonByLogin(login);
+    }
+
     public void deletePerson(Long id){
         personRepository.deleteById(id);
     }
+
+
 }

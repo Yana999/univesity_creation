@@ -3,6 +3,7 @@ package ru.abdramanova.university_platform.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.service.PersonService;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,26 +33,26 @@ public class PersonController {
     }
 
     //выборка по id
-    @GetMapping("/{id}")
-    public ResponseEntity<Person> personById(@PathVariable Long id){
-        return  personService.getPersonById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Person> personById(@PathVariable Long id){
+//        return  ResponseEntity.ok(personService.getPersonById(id).get());
+//    }
+
+    @GetMapping("/account")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Person toAccount(@AuthenticationPrincipal Person user){
+        return  user;
     }
 
     // выборка по фамилии в репозитории запрос Query
     @GetMapping("/student")
-    public ResponseEntity<List<Person>> getStudentBySurname(@RequestParam("surname") String surname){
-        return personService.findStudentBySurname(surname)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Iterable<Person>> getStudentBySurname(@RequestParam("surname") String surname){
+        if(surname == null){
+            return ResponseEntity.ok(personService.getStudents());
+        }else {
+            return ResponseEntity.ok(personService.findStudentBySurname(surname).get());
+        }
     }
-
-//    //выборка всех студентов
-//    @GetMapping("/student")
-//    public ResponseEntity<Iterable<Person>> getAllStudents(){
-//        return ResponseEntity.ok(personService.getStudents());
-//    }
 
     //добавление и полное обновление данных о человеке
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
@@ -67,11 +69,8 @@ public class PersonController {
     @PatchMapping("/{id}")
     public ResponseEntity<Person> updatePerson(@Valid @PathVariable("id") Long id, @RequestParam("surname") String surname){
         Optional<Person> person = personService.getPersonById(id);
-        if(person.isPresent()){
-            person.get().setSurname(surname);
-            return  ResponseEntity.ok(personService.updatePerson(person.get()));
-        }
-        return ResponseEntity.badRequest().build();
+        person.get().setSurname(surname);
+        return  ResponseEntity.ok(personService.updatePerson(person.get()));
     }
 
     //удаление человека по id
@@ -84,8 +83,6 @@ public class PersonController {
     // выборка людей из группы с определенными оценками
     @GetMapping("/assessment")
     public ResponseEntity<List<Person>> withAssessment (@Valid @RequestParam Integer assessment){
-        return personService.findStudentsByAssessment(assessment)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(personService.findStudentsByAssessment(assessment).get());
     }
 }

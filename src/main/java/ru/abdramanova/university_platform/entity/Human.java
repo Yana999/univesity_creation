@@ -1,8 +1,13 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.abdramanova.university_platform.config.SecurityConfig;
+
 import javax.validation.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -35,13 +40,25 @@ public abstract class Human {
     @Column(nullable = false)
     @NotBlank
     protected String name;
-    @Column(nullable = false)
     @NotBlank
     protected String secondName;
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+    @JsonIgnore
+    @Column(unique = true, nullable = false)
+    private String login;
 
-    public Human(String surname, String name, String secondName) {
+    public Human(String surname, String name, String secondName, String password, String login) {
         this.surname = surname;
         this.name = name;
         this.secondName = secondName;
+        setPassword(password);
+        this.login = login;
     }
+
+    public void setPassword (String password){
+        this.password = SecurityConfig.PASSWORD_ENCODER.encode(password);
+    }
+
 }

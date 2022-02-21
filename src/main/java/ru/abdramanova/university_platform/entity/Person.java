@@ -20,15 +20,15 @@ public class Person extends Human{
     public Person() {
     }
 
-    public Person(String surname, String name, String secondName, String phoneNumber, String email, PersonRole personRole) {
-        super(surname, name, secondName);
+    public Person(String login, String password, String surname, String name, String secondName, String phoneNumber, String email, PersonRole personRole) {
+        super(surname, name, secondName, password, login);
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.personRole = personRole;
     }
 
-    public Person(String surname, String name, String secondName, String phoneNumber, String email, StudyGroup studyGroup, PersonRole personRole) {
-        super(surname, name, secondName);
+    public Person(String login, String password, String surname, String name, String secondName, String phoneNumber, String email, StudyGroup studyGroup, PersonRole personRole) {
+        super(surname, name, secondName, password, login);
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.studyGroup = studyGroup;

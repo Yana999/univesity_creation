@@ -49,18 +49,18 @@ public class InitService implements ApplicationRunner {
             Subject combinatorics = new Subject("Комбинаторика", exam);
             Subject english = new Subject("Английский", test);
 
-            PersonRole teacher = new PersonRole("Преподаватель");
-            PersonRole student = new PersonRole("Студент");
-            PersonRole admin = new PersonRole("Администратор");
+            PersonRole teacher = new PersonRole("teacher");
+            PersonRole student = new PersonRole("student");
+            PersonRole admin = new PersonRole("admin");
 
             StudyGroup mpi1 = new StudyGroup("МПИ-21-1-7");
             StudyGroup mvt2 = new StudyGroup("МИВТ-21-2-4");
 
-            Person person1 = new Person("Абдраманова", "Яна", "Расимовна", "89628569064", "Abdramanova.yana@yandex.ru", mpi1, student);
-            Person person2 = new Person("Новикова", "Полина", "Сергеевна", "89876543211", "PS1234@yandex.ru", mvt2, student);
-            Person person3 = new Person("Битаров", "Костантин", "Эльбрусович", "89112223344", "TheNoneMan@gmai.com", mpi1, student);
-            Person person4 = new Person("Бирина", "Венера", "Юрьевна", "89998887766", "BirinaV@mail.ru", teacher);
-            Person person5 = new Person("Емельянова", "Татьяна", "Викторовна", "89121234345", "Emelyanove@mail.ru", teacher);
+            Person person1 = new Person("m1234567@edu.misis.ru", "123456", "Абдраманова", "Яна", "Расимовна", "89628569064", "Abdramanova.yana@yandex.ru", mpi1, student);
+            Person person2 = new Person("m1122334@edu.misis.ru", "112233", "Новикова", "Полина", "Сергеевна", "89876543211", "PS1234@yandex.ru", mvt2, student);
+            Person person3 = new Person("m1702203@edu.misis.ru", "654321", "Битаров", "Костантин", "Эльбрусович", "89112223344", "TheNoneMan@gmai.com", mpi1, student);
+            Person person4 = new Person("m1987654@edu.misis.ru", "135790","Бирина", "Венера", "Юрьевна", "89998887766", "BirinaV@mail.ru", teacher);
+            Person person5 = new Person("m1234567889@edu.misis.ru", "97531","Емельянова", "Татьяна", "Викторовна", "89121234345", "Emelyanove@mail.ru", teacher);
 
             SubInGroup combInMpi1 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 23, 23, 59), combinatorics, mpi1, person4);
             SubInGroup combInMvt2 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 20, 23, 59), english, mvt2, person5);
@@ -112,8 +112,8 @@ public class InitService implements ApplicationRunner {
     @EventListener
     public void handleContextStarted(ContextStartedEvent event) {
         Subject quantum = new Subject("Квантовая информатика", controlFormDictRepository.findById((short)2).get());
-        Person person6 = new Person("Арсентьев", "Александр", "Андреевич", "89776090228", "m1605456@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
-        Person person7 = new Person("Бердичевская", "Анна", "Григорьевна", "89257034136", "m1704475@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("студент").get());
+        Person person6 = new Person("m214365@edu.misis.ru", "6090999","Арсентьев", "Александр", "Андреевич", "89776090228", "m1605456@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("student").get());
+        Person person7 = new Person("m111111@edu.misis.ru", "112233anya", "Бердичевская", "Анна", "Григорьевна", "89257034136", "m1704475@edu.misis.ru", studyGroupRepository.findByName("МПИ-21-1-7").get(0), personRoleRepository.findPersonRoleByNameIgnoreCase("student").get());
         personRepository.save(person6);
         personRepository.save(person7);
         subjectRepository.save(quantum);

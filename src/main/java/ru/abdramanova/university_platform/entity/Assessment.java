@@ -2,6 +2,8 @@ package ru.abdramanova.university_platform.entity;
 
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,8 +27,7 @@ public class Assessment {
     )
     private Long id;
     @Column(nullable = false)
-    @Max(value = 100)
-    @Min(value = 0)
+    @Range(min = -1, max = 101)
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)
