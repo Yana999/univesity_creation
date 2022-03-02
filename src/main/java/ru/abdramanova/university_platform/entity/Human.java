@@ -11,6 +11,7 @@ import ru.abdramanova.university_platform.config.SecurityConfig;
 import javax.validation.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @MappedSuperclass
 @Setter
@@ -44,9 +45,12 @@ public abstract class Human {
     protected String secondName;
     @JsonIgnore
     @Column(nullable = false)
+    @NotBlank
+    @Size(min = 3)
     private String password;
     @JsonIgnore
     @Column(unique = true, nullable = false)
+    @NotBlank
     private String login;
 
     public Human(String surname, String name, String secondName, String password, String login) {

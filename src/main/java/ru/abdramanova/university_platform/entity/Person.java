@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 @Entity
 public class Person extends Human{
 
-    @Column(nullable = false, length = 16)
+    @Column(nullable = false, length = 11)
     @Digits(integer = 11, fraction = 0)
     private String phoneNumber;
     @Column(nullable = false)

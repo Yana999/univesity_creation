@@ -1,5 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -17,10 +19,10 @@ public class Subject {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private ControlFormDict controlForm;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany( mappedBy = "subject")
     private List<SubInGroup> subjectsInfo;
 
     public Subject() {
@@ -57,6 +59,7 @@ public class Subject {
         this.controlForm = controlForm;
     }
 
+    @JsonIgnore
     public List<SubInGroup> getSubjectsInfo() {
         return subjectsInfo;
     }

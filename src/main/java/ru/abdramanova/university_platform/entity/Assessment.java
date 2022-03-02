@@ -1,8 +1,11 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -28,6 +31,8 @@ public class Assessment {
     private Long id;
     @Column(nullable = false)
     @Range(min = -1, max = 101)
+    @CreatedBy
+    @CreatedDate
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)
@@ -47,6 +52,7 @@ public class Assessment {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public int getAssessment() {
         return assessment;
@@ -78,6 +84,7 @@ public class Assessment {
         this.task = task;
     }
 
+    @JsonIgnore
     public Task getTask() {
         return task;
     }

@@ -1,5 +1,9 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -11,16 +15,18 @@ import java.util.List;
 public class Task {
     @EmbeddedId
     private TaskKey taskKey;
-    @Lob
     @NotNull
     @Column(nullable = false,length = 400)
+    @CreatedBy
+    @CreatedDate
     private String content;
     @Column(nullable = false)
     @Future
+    @CreatedBy
     private LocalDateTime deadline;
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Material> materials;
-    @OneToMany(mappedBy = "task", orphanRemoval = true)
+    @OneToMany(mappedBy = "task", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Assessment> assessments;
     @ManyToOne
     private SubInGroup subInfo;
@@ -75,6 +81,7 @@ public class Task {
         this.deadline = deadline;
     }
 
+    @JsonIgnore
     public List<Material> getMaterials() {
         return materials;
     }

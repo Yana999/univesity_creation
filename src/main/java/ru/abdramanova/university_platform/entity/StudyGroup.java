@@ -18,6 +18,8 @@ public class StudyGroup {
     private String name;
     @OneToMany(fetch = FetchType.LAZY,  mappedBy = "studyGroup")
     private List<Person> people;
+    @OneToMany
+    private List<SubInGroup> subInGroups;
 
 
     public StudyGroup() {
@@ -50,6 +52,24 @@ public class StudyGroup {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
+    }
+
+    @JsonIgnore
+    public List<SubInGroup> getSubInGroups() {
+        return subInGroups;
+    }
+
+    public void setSubInGroups(List<SubInGroup> subInGroups) {
+        this.subInGroups = subInGroups;
     }
 
     @JsonIgnore

@@ -44,7 +44,7 @@ public class TaskKey implements Serializable {
         return name;
     }
 
-    public void setName(String surname) {
-        this.name = surname;
+    public void setName(String name) {
+        this.name = name;
     }
 }

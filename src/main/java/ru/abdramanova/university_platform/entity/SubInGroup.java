@@ -1,5 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import java.time.LocalDateTime;
@@ -14,13 +16,13 @@ public class SubInGroup {
     @Column(nullable = false)
     @Future
     private LocalDateTime deadline;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Subject subject;
     @ManyToOne
     private StudyGroup group;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Person teacher;
-    @OneToMany(mappedBy = "subInfo")
+    @OneToMany(mappedBy = "subInfo", cascade = CascadeType.REMOVE)
     private List<Task> tasks;
 
     public SubInGroup() {
@@ -41,6 +43,7 @@ public class SubInGroup {
         this.id = id;
     }
 
+    @JsonIgnore
     public List<Task> getTasks() {
         return tasks;
     }
@@ -68,8 +71,6 @@ public class SubInGroup {
     public StudyGroup getGroup() {
         return group;
     }
-
-    
 
     public void setGroup(StudyGroup group) {
         this.group = group;

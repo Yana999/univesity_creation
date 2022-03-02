@@ -12,6 +12,7 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.security.sasl.AuthenticationException;
@@ -24,12 +25,18 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class, NoSuchElementException.class})
     public ResponseEntity<Object> handleNotFoundException(RuntimeException exception, WebRequest request){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
     }
 
     @ExceptionHandler({AuthenticationException.class, SessionAuthenticationException.class})
     public  ResponseEntity<Object> handleAuthenticationException(RuntimeException exception, HttpServletRequest request, HttpServletResponse response){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("User does not exist", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Unable to upload. File is too large!");
     }
 
     @Getter

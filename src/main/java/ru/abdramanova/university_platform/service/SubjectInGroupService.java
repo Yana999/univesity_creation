@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.StudyGroup;
+import ru.abdramanova.university_platform.entity.SubInGroup;
 import ru.abdramanova.university_platform.repositories.ControlFormDictRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
 import ru.abdramanova.university_platform.repositories.SubInGroupRepository;
@@ -36,7 +37,15 @@ public class SubjectInGroupService {
                 .orElseGet(Collections::emptyList);
     }
 
-    public Page getContrForm(int number, int size){
-        return controlFormDictRepository.findAll(PageRequest.of(number,size));
+    public Optional<SubInGroup> save(SubInGroup subInGroup){
+        return Optional.of(subInGroupRepository.save(subInGroup));
+    }
+
+    public Iterable<SubInGroup> getAllSubInGroup(){
+        return subInGroupRepository.findAll();
+    }
+
+    public void removeSubInGroup(Long subInGroupId){
+        subInGroupRepository.deleteById(subInGroupId);
     }
 }

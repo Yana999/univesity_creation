@@ -1,5 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,15 +11,13 @@ public class Material {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.AUTO
     )
-    private long id;
-    @Column
-    @NotBlank
+    private Long id;
     private String name;
-    @Column
+    private String contentType;
+    private Long size;
     @Lob
-    @NotNull
     private byte[] file;
     @ManyToOne
     private Task task;
@@ -25,17 +25,26 @@ public class Material {
     public Material() {
     }
 
-    public Material(String name, byte[] file, Task task) {
+    public Material(String name, String contentType, Long size, @NotNull byte[] file) {
         this.name = name;
+        this.contentType = contentType;
+        this.size = size;
+        this.file = file;
+    }
+
+    public Material(String name, String contentType, Long size, @NotNull byte[] file, Task task) {
+        this.name = name;
+        this.contentType = contentType;
+        this.size = size;
         this.file = file;
         this.task = task;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,5 +70,22 @@ public class Material {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 }
