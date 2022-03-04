@@ -1,9 +1,6 @@
 package ru.abdramanova.university_platform.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -25,12 +22,6 @@ public class Material {
     public Material() {
     }
 
-    public Material(String name, String contentType, Long size, @NotNull byte[] file) {
-        this.name = name;
-        this.contentType = contentType;
-        this.size = size;
-        this.file = file;
-    }
 
     public Material(String name, String contentType, Long size, @NotNull byte[] file, Task task) {
         this.name = name;

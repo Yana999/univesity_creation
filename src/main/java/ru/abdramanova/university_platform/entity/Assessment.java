@@ -4,17 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Check(constraints = "assessment >= 0 AND assessment <= 100")
-public class Assessment {
+public class Assessment  implements Serializable {
     @Id
     @GeneratedValue(
             strategy = GenerationType.TABLE,
@@ -31,8 +30,6 @@ public class Assessment {
     private Long id;
     @Column(nullable = false)
     @Range(min = -1, max = 101)
-    @CreatedBy
-    @CreatedDate
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)

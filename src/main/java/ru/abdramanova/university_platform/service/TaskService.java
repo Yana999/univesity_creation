@@ -1,7 +1,6 @@
 package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.abdramanova.university_platform.entity.Assessment;
 import ru.abdramanova.university_platform.entity.SubInGroup;
@@ -68,9 +67,9 @@ public class TaskService {
         return Optional.ofNullable(tasks);
     }
 
-    public List<Assessment> addAllAssessment(List<Assessment> assessments){
+    public List<Assessment> addAllAssessments(List<Assessment> assessments){
         List<Task> tasks = taskRepository.findAllById(assessments.stream().map(x -> x.getTask().getTaskKey()).distinct().collect(Collectors.toList()));
-        assessments.stream().forEach(x -> x.setTask(tasks.stream().filter(task -> task.getTaskKey().equals(x.getTask().getTaskKey())).findFirst().get()));
+        assessments.forEach(x -> x.setTask(tasks.stream().filter(task -> task.getTaskKey().equals(x.getTask().getTaskKey())).findFirst().get()));
         return assessmentRepository.saveAll(assessments);
     }
 

@@ -6,14 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import ru.abdramanova.university_platform.entity.ControlFormDict;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.SubInGroup;
 import ru.abdramanova.university_platform.service.SubjectInGroupService;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class SubjectController {

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.abdramanova.university_platform.entity.FileResponse;
 import ru.abdramanova.university_platform.entity.Material;
 import ru.abdramanova.university_platform.entity.Task;
+import ru.abdramanova.university_platform.service.AuthService;
 import ru.abdramanova.university_platform.service.FileService;
 import ru.abdramanova.university_platform.service.TaskService;
 
@@ -25,12 +26,12 @@ import java.util.stream.Collectors;
 public class TaskController {
 
     private final TaskService taskService;
-    private final AuthController authController;
+    private final AuthService authController;
     private final FileService materialService;
 
 
     @Autowired
-    public TaskController(TaskService taskService, AuthController authController, FileService materialService) {
+    public TaskController(TaskService taskService, AuthService authController, FileService materialService) {
         this.authController = authController;
         this.taskService = taskService;
         this.materialService = materialService;
@@ -62,27 +63,19 @@ public class TaskController {
         return taskService.getTaskBySubInGroup(subjectId).get();
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_student')")
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public Iterable<Task> getTasksForStudent(@RequestParam long subjectId){
-//        return taskService.getTaskByStudentAndSubInGroup(subjectId, authController.getAuthUser().get().getId()).get();
-//    }
-
     //получение файлов материалов для преподавателей и студентов
     @RolesAllowed({"ROLE_student", "ROLE_teacher"})
     @GetMapping("/material/{id}")
     public ResponseEntity<byte[]> getMaterial(@PathVariable Long id){
         Optional<Material> material = materialService.getMaterial(1L);
         if(!material.isPresent()){
-            System.out.println("empty");
             return ResponseEntity.notFound().build();
         }
         System.out.println(material.get().getName());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + material.get().getName() + "\"")
                 .contentType(MediaType.valueOf(material.get().getContentType()))
-                .body(materialService.getMaterial(1L).get().getFile());
+                .body(materialService.getMaterial(id).get().getFile());
     }
 
     //получение списка всех материалов

@@ -1,28 +1,30 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-public class Task {
+@DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
+public class Task implements Serializable {
     @EmbeddedId
     private TaskKey taskKey;
     @NotNull
     @Column(nullable = false,length = 400)
-    @CreatedBy
-    @CreatedDate
     private String content;
     @Column(nullable = false)
     @Future
-    @CreatedBy
     private LocalDateTime deadline;
     @OneToMany(mappedBy = "task", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Material> materials;
@@ -30,6 +32,14 @@ public class Task {
     private List<Assessment> assessments;
     @ManyToOne
     private SubInGroup subInfo;
+    @CreatedBy
+    @Column(updatable = false)
+    private String createdBy;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
     public Task() {
     }
@@ -96,5 +106,29 @@ public class Task {
 
     public void setAssessments(List<Assessment> assessments) {
         this.assessments = assessments;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

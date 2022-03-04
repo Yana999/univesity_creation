@@ -92,7 +92,7 @@ public class InitService implements ApplicationRunner {
             controlFormDictRepository.saveAll(List.of(exam, test, test2));
             personRoleRepository.saveAll(List.of(teacher,student,admin));
             studyGroupRepository.saveAll(List.of(mpi1, mvt2));
-            personRepository.saveAll(List.of(person1, person2,person3, person4, person5));
+            personRepository.saveAll(List.of(person1, person2,person3, person4, person5, person8));
             subInGroupRepository.saveAll(List.of(combInMpi1,combInMvt2));
             taskRepository.saveAllAndFlush(List.of(task1, task2,task3,task4, task5));
         assessmentRepository.saveAll(List.of(assessment1,assessment2, assessment3, assessment4, assessment5,assessment6, assessment7, assessment8));

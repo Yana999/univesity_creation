@@ -2,11 +2,9 @@ package ru.abdramanova.university_platform.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Assessment;
-import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.service.TaskService;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class AssessmentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addAssessments(@RequestBody List<Assessment> assessmentList){
-        taskService.addAllAssessment(assessmentList);
+        taskService.addAllAssessments(assessmentList);
         //сделать добавление только для одного задания
     }
 
@@ -35,8 +33,8 @@ public class AssessmentController {
     @PreAuthorize("hasRole('ROLE_teacher')")
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updateAssessments(@RequestBody List<Assessment> assessments, List<Long> ids){
-        taskService.addAllAssessment(assessments);
+    public void updateAssessments(@RequestBody List<Assessment> assessments){
+        taskService.addAllAssessments(assessments);
     }
 
     //просмотр успеваемости для студента

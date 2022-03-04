@@ -5,16 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.entity.Person;
+import ru.abdramanova.university_platform.service.AuthService;
 import ru.abdramanova.university_platform.service.PersonService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +21,10 @@ import java.util.Optional;
 public class PersonController {
 
     private final PersonService personService;
-    private final AuthController authController;
+    private final AuthService authController;
 
     @Autowired
-    public PersonController(PersonService personService, AuthController authController) {
+    public PersonController(PersonService personService, AuthService authController) {
         this.personService = personService;
         this.authController = authController;
     }

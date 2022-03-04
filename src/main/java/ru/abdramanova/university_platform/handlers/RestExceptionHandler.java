@@ -1,14 +1,9 @@
 package ru.abdramanova.university_platform.handlers;
 
 
-import lombok.Getter;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.security.web.csrf.InvalidCsrfTokenException;
-import org.springframework.security.web.csrf.MissingCsrfTokenException;
-import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -37,16 +32,5 @@ public class RestExceptionHandler {
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException exc) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Unable to upload. File is too large!");
-    }
-
-    @Getter
-    public class ErrorInfo {
-        private final String url;
-        private final String info;
-
-        ErrorInfo(String url, String info) {
-            this.url = url;
-            this.info = info;
-        }
     }
 }

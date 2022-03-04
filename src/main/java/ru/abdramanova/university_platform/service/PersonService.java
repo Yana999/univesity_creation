@@ -10,7 +10,6 @@ import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.PersonRoleRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
