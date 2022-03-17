@@ -1,6 +1,9 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Range;
@@ -13,6 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Check(constraints = "assessment >= 0 AND assessment <= 100")
+@Setter
+@Getter
+@NoArgsConstructor
 public class Assessment  implements Serializable {
     @Id
     @GeneratedValue(
@@ -39,56 +45,9 @@ public class Assessment  implements Serializable {
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Task task;
 
-    public Assessment() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public int getAssessment() {
-        return assessment;
-    }
-
-    public void setAssessment(int assessment) {
-        this.assessment = assessment;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public Person getUser() {
-        return user;
-    }
-
-    public void setUser(Person user) {
-        this.user = user;
-    }
-
     public Assessment(int assessment, Person user, Task task) {
         this.assessment = assessment;
         this.user = user;
         this.task = task;
     }
-
-    @JsonIgnore
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-
 }

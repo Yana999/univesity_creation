@@ -1,6 +1,9 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -8,25 +11,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@IdClass(SubInGroupId.class)
 public class SubInGroup {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false)
     @Future
     private LocalDateTime deadline;
+    @Id
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Subject subject;
+    @Id
     @ManyToOne
     private StudyGroup group;
     @OneToOne
     private Person teacher;
     @OneToMany(mappedBy = "subInfo", cascade = CascadeType.REMOVE)
     private List<Task> tasks;
-
-    public SubInGroup() {
-    }
 
     public SubInGroup(LocalDateTime deadline, Subject subject, StudyGroup group, Person teacher) {
         this.deadline = deadline;
@@ -35,52 +38,4 @@ public class SubInGroup {
         this.teacher = teacher;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
-    public StudyGroup getGroup() {
-        return group;
-    }
-
-    public void setGroup(StudyGroup group) {
-        this.group = group;
-    }
-
-    public Person getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Person teacher) {
-        this.teacher = teacher;
-    }
 }

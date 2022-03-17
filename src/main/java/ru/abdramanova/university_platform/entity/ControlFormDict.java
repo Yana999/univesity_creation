@@ -1,6 +1,9 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 public class ControlFormDict {
 
     @Id
@@ -20,35 +26,7 @@ public class ControlFormDict {
     @OneToMany(mappedBy = "controlForm", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<Subject> subjects = new ArrayList<>();
 
-    public ControlFormDict() {
-    }
-
-    @JsonIgnore
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
     public ControlFormDict(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(short id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 }

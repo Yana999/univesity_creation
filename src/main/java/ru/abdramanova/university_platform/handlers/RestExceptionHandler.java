@@ -33,4 +33,6 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Unable to upload. File is too large!");
     }
+
+    // посмотреть обработку ошибок при отсутствии ожидаемых параметров запроса
 }

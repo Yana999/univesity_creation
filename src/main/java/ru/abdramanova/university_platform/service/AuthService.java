@@ -23,6 +23,8 @@ public class AuthService {
         if (auth ==null){
             return Optional.empty();
         }
+        System.out.println("\n" + auth.getDetails().getClass());
+        System.out.println(auth.getPrincipal() + "\n");
         return personService.findStudentByLogin(auth.getName());
     }
 

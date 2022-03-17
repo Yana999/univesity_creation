@@ -13,12 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.abdramanova.university_platform.security.AuditAware;
 
 @Configuration
 @EnableWebSecurity
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableTransactionManagement
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 

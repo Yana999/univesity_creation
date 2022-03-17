@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.abdramanova.university_platform.entity.Material;
-import ru.abdramanova.university_platform.entity.TaskKey;
 import ru.abdramanova.university_platform.repositories.MaterialRepository;
 import ru.abdramanova.university_platform.repositories.TaskRepository;
 
@@ -29,7 +28,6 @@ public class FileService {
             Material material = new Material();
             material.setName(StringUtils.cleanPath(file.getOriginalFilename()));
             material.setContentType(file.getContentType());
-            material.setSize(file.getSize());
             material.setFile(file.getBytes());
             return materialRepository.save(material) == null ? true : false;
 
@@ -42,8 +40,9 @@ public class FileService {
         return materialRepository.findById(id);
     }
 
-    public List<Material> getFilesByTask(TaskKey taskId){
-        return taskRepository.findById(taskId).get().getMaterials();
+    public List<Material> getFilesByTask(Long taskId){
+        //return taskRepository.findById(taskId).get().getMaterials();
+        return null;
     }
 
     public List<Material> getAllFiles() {

@@ -47,6 +47,7 @@ public class InitService implements ApplicationRunner {
             ControlFormDict test = new ControlFormDict("зачет");
             ControlFormDict exam = new ControlFormDict("экзамен");
             ControlFormDict test2 = new ControlFormDict("зачет с оценкой");
+
             Subject combinatorics = new Subject("Комбинаторика", exam);
             Subject english = new Subject("Английский", test);
 
@@ -65,18 +66,23 @@ public class InitService implements ApplicationRunner {
             Person person8 = new Person("m123@edu.misis.ru", "123","Абдраманова", "Анастасия", "Расимовна", "89111111111", "Abdramanova@mail.ru", admin);
 
             SubInGroup combInMpi1 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 23, 23, 59), combinatorics, mpi1, person4);
-            SubInGroup combInMvt2 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 20, 23, 59), english, mvt2, person5);
+            SubInGroup combInMvt2 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 20, 23, 59), combinatorics, mvt2, person4);
+            SubInGroup englishInMvt2 = new SubInGroup(LocalDateTime.of(2022, Month.JUNE, 20, 23, 59), english, mvt2, person5);
 
-            Task task1 = new Task(new TaskKey("Задача 1"), "Решить задачи A - F контеста 1",
-                    LocalDateTime.of(2022, Month.MARCH, 11, 23, 59), combInMpi1);
-            Task task2 = new Task(new TaskKey("Задача 1"), "Решить задачи A - F контеста 1",
-                    LocalDateTime.of(2022, Month.MARCH, 15, 23, 59), combInMvt2);
-            Task task3 = new Task(new TaskKey("Задача 2"), "Решить задачи A - F контеста 1",
-                    LocalDateTime.of(2022, Month.MARCH, 17, 13, 59), combInMpi1);
-            Task task4 = new Task(new TaskKey("Задача 3"), "Решить задачи A - F контеста 1",
-                    LocalDateTime.of(2022, Month.MARCH, 21, 23, 50), combInMpi1);
-            Task task5 = new Task(new TaskKey("Задача 4"), "Решить задачи A - F контеста 1",
-                    LocalDateTime.of(2022, Month.MARCH, 30, 21, 59), combInMpi1);
+            Task task1 = new Task("Задача 1", "Решить задачи A - F контеста 1",
+                    LocalDateTime.of(2022, Month.APRIL, 11, 23, 59), combInMpi1);
+            Task task2 = new Task("Задача 1", "Решить задачи A - F контеста 2",
+                    LocalDateTime.of(2022, Month.APRIL, 29, 23, 59), combInMvt2);
+            Task task3 = new Task("Задача 2", "Решить задачи A - F контеста 3",
+                    LocalDateTime.of(2022, Month.MAY, 17, 13, 59), combInMpi1);
+            Task task4 = new Task("Задача 3", "Решить задачи A - F контеста 4",
+                    LocalDateTime.of(2022, Month.APRIL, 21, 23, 50), combInMpi1);
+            Task task5 = new Task("Задача 4", "Решить задачи A - F контеста 5",
+                    LocalDateTime.of(2022, Month.APRIL, 30, 21, 59), combInMpi1);
+        Task task6 = new Task("Задание 1", "Выучить словарь за 2 семестр",
+                LocalDateTime.of(2022, Month.MAY, 12, 23, 50), englishInMvt2);
+        Task task7 = new Task("Проект", "1. Разбиться на комнады \n2. Выбрать тему проекта ",
+                LocalDateTime.of(2022, Month.MAY, 30, 23, 59), englishInMvt2);
 
             Assessment assessment1 = new Assessment(56, person1, task1);
             Assessment assessment2 = new Assessment(71, person2, task1);
@@ -93,9 +99,10 @@ public class InitService implements ApplicationRunner {
             personRoleRepository.saveAll(List.of(teacher,student,admin));
             studyGroupRepository.saveAll(List.of(mpi1, mvt2));
             personRepository.saveAll(List.of(person1, person2,person3, person4, person5, person8));
-            subInGroupRepository.saveAll(List.of(combInMpi1,combInMvt2));
-            taskRepository.saveAllAndFlush(List.of(task1, task2,task3,task4, task5));
-        assessmentRepository.saveAll(List.of(assessment1,assessment2, assessment3, assessment4, assessment5,assessment6, assessment7, assessment8));
+            subjectRepository.saveAll(List.of(english, combinatorics));
+            subInGroupRepository.saveAll(List.of(combInMpi1,combInMvt2, englishInMvt2));
+            taskRepository.saveAll(List.of(task1, task2,task3,task4, task5, task6, task7));
+            assessmentRepository.saveAll(List.of(assessment1,assessment2, assessment3, assessment4, assessment5,assessment6, assessment7, assessment8));
             try{
                 byte[] materialFile =  Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("files/Stat 1.pdf")).readAllBytes();
                 Material material1 = new Material("To task 1", MediaType.APPLICATION_PDF_VALUE, Long.valueOf(materialFile.length),  materialFile, task1);

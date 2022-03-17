@@ -30,27 +30,41 @@ public class PersonService {
         this.assessmentRepository = assessmentRepository;
     }
 
-    public Iterable<Person> getPeople(){
-        return personRepository.findAll();
+
+    public List<Person> getTeachers(){
+        Optional<PersonRole> teachers = personRoleRepository.findPersonRoleByNameIgnoreCase("teacher");
+        if(teachers.isPresent()){
+            return personRoleRepository.findPersonRoleByNameIgnoreCase("teacher").get().getPeople();
+        }
+        return Collections.emptyList();
     }
 
-    public Optional<Person> getPersonById(Long id){
-        return personRepository.findById(id);
+    public Optional<Person> getStudentById(Long personId){
+        PersonRole personRole = personRoleRepository.findPersonRoleByNameIgnoreCase("student").get();
+        return personRepository.findByPersonRoleIdAndId(personRole.getId(), personId);
     }
 
-    public Iterable<Person> getStudents(){
-        return personRoleRepository.findById(2L)
+    public List<Person> getStudents(){
+        return personRoleRepository.findPersonRoleByNameIgnoreCase("student")
                 .map(PersonRole::getPeople)
                 .orElseGet(Collections::emptyList);
     }
 
-    public Person updatePerson(Person person) {
-        return personRepository.save(person);
+    public Optional<Person> updatePerson(Person person) {
+        Person person1 = personRepository.findById(person.getId()).orElseGet(null);
+        person1.setName(person.getName());
+        person1.setSurname(person.getSurname());
+        person1.setSecondName(person.getSecondName());
+        person1.setEmail(person.getEmail());
+        person1.setPhoneNumber(person.getPhoneNumber());
+        person1.setStudyGroup(studyGroupRepository.findById(person.getStudyGroup().getGroupId()).get());
+        return Optional.of(personRepository.save(person1));
     }
 
     public Optional<Person> savePerson( Person person){
+
         if(person.getStudyGroup().getName() == null){
-            Optional<StudyGroup> studyGroup = studyGroupRepository.findById(person.getStudyGroup().getId());
+            Optional<StudyGroup> studyGroup = studyGroupRepository.findById(person.getStudyGroup().getGroupId());
             if(studyGroup.isPresent()){
                 person.setStudyGroup(studyGroup.get());
             }else {

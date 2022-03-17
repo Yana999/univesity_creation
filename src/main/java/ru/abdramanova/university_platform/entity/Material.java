@@ -1,9 +1,18 @@
 package ru.abdramanova.university_platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString(exclude = "invoice")
+@EqualsAndHashCode(exclude = "invoice")
 public class Material {
 
     @Id
@@ -13,70 +22,44 @@ public class Material {
     private Long id;
     private String name;
     private String contentType;
-    private Long size;
     @Lob
     private byte[] file;
     @ManyToOne
     private Task task;
-
-    public Material() {
-    }
-
+    @Transient
+    private String url;
+    @Transient
+    private int size;
 
     public Material(String name, String contentType, Long size, @NotNull byte[] file, Task task) {
         this.name = name;
         this.contentType = contentType;
-        this.size = size;
         this.file = file;
         this.task = task;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public byte[] getFile() {
-        return file;
     }
 
     public void setFile(byte[] file) {
         this.file = file;
+        this.size = file.length;
+        System.out.println(file.length);
     }
 
-    public Task getTask() {
-        return task;
+    public void setId(Long id) {
+        this.id = id;
+        this.url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/task/material/")
+                .path(id.toString())
+                .toUriString();
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public String getUrl() {
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/task/material/")
+                .path(id.toString())
+                .toUriString();
     }
 
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
+    public int getSize() {
+        return file.length;
     }
 }

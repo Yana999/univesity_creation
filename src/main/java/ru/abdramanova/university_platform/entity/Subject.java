@@ -1,11 +1,17 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 public class Subject {
 
@@ -13,7 +19,7 @@ public class Subject {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    private int id;
+    private int subjectId;
 
     @NotBlank
     @Column(nullable = false)
@@ -25,46 +31,9 @@ public class Subject {
     @OneToMany( mappedBy = "subject")
     private List<SubInGroup> subjectsInfo;
 
-    public Subject() {
-    }
-
     public Subject(String name, ControlFormDict controlForm) {
         this.name = name;
         this.controlForm = controlForm;
     }
 
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ControlFormDict getControlForm() {
-        return controlForm;
-    }
-
-    public void setControlForm(ControlFormDict controlForm) {
-        this.controlForm = controlForm;
-    }
-
-    @JsonIgnore
-    public List<SubInGroup> getSubjectsInfo() {
-        return subjectsInfo;
-    }
-
-    public void setSubjectsInfo(List<SubInGroup> subjectsInfo) {
-        this.subjectsInfo = subjectsInfo;
-    }
 }

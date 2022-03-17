@@ -1,12 +1,18 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 public class PersonRole {
 
     @Id
@@ -25,44 +31,6 @@ public class PersonRole {
     @OneToMany(mappedBy = "personRole", orphanRemoval = true)
     private List<Person> people;
 
-    public PersonRole() {
-    }
-
-    public PersonRole(Long id) {
-        this.id = id;
-    }
-
-    public PersonRole(String name) {
-        this.name = name;
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonIgnore
-    public List<Person> getPeople() {
-        return people;
-    }
-
-    public void setPeople(List<Person> people) {
-        this.people = people;
-    }
-
     @Override
     public String toString() {
         return "PersonRole{" +
@@ -70,5 +38,9 @@ public class PersonRole {
                 ", name='" + name + '\'' +
                 ", people=" + people +
                 '}';
+    }
+
+    public PersonRole(String name) {
+        this.name = name;
     }
 }

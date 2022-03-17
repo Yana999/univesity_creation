@@ -2,19 +2,17 @@ package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.abdramanova.university_platform.entity.Assessment;
+import org.springframework.transaction.annotation.Transactional;
 import ru.abdramanova.university_platform.entity.SubInGroup;
+import ru.abdramanova.university_platform.entity.SubInGroupId;
 import ru.abdramanova.university_platform.entity.Task;
 import ru.abdramanova.university_platform.repositories.AssessmentRepository;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.SubInGroupRepository;
 import ru.abdramanova.university_platform.repositories.TaskRepository;
 
-import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -32,45 +30,47 @@ public class TaskService {
         this.assessmentRepository = assessmentRepository;
     }
 
-    public List<Task> findTasksBySubInGroup(Long id){
-        return subInGroupRepository.findById(id).map(SubInGroup::getTasks).orElseGet(Collections::emptyList);
-    }
-
     public Task addTask(Task task){
-        Optional<SubInGroup> sub = subInGroupRepository.findById(task.getSubInfo().getId());
+        System.out.println(task.getSubInfo().getGroup().getGroupId());
+        System.out.println(task.getSubInfo().getSubject().getSubjectId());
+        Optional<SubInGroup> sub = subInGroupRepository.findById(new SubInGroupId(task.getSubInfo().getGroup().getGroupId(), task.getSubInfo().getSubject().getSubjectId()));
         if(!sub.isPresent()){
             return null;
         }
         task.setSubInfo(sub.get());
-        task.getTaskKey().setId(new Timestamp( System.currentTimeMillis()));
 
         return taskRepository.save(task);
     }
 
-    public Optional<Iterable<Task>>  getTaskBySubInGroup(Long subId){
-        Optional<SubInGroup> subInGroup = subInGroupRepository.findById(subId);
+    public Task updateTask(Task task){
+        Optional<Task> curTask = taskRepository.findById(task.getId());
+        if(!curTask.isPresent()){
+            return null;
+        }
+        Task t = curTask.get();
+        t.setName(task.getName());
+        t.setContent(task.getContent());
+        t.setDeadline(task.getDeadline());
+        t.setMaterials(task.getMaterials());
+
+        return taskRepository.save(t);
+    }
+
+    public Optional<List<Task>>  getTaskByGroupAndSubject(int groupId, int subjectId){
+        Optional<SubInGroup> subInGroup = subInGroupRepository.findById(new SubInGroupId(groupId, subjectId));
         if (!subInGroup.isPresent()) {
             return Optional.empty();
         }
-        List<Task> tasks = subInGroupRepository.findById(subId).get().getTasks();
+        List<Task> tasks = subInGroup.get().getTasks();
         return Optional.ofNullable(tasks);
     }
 
-
-    //убрать людей и оценки
-    public Optional<Iterable<Task>>  getTaskByStudentAndSubInGroup(Long subId, Long studentId){
-        Optional<SubInGroup> subInGroup = subInGroupRepository.findById(subId);
-        if (!subInGroup.isPresent()) {
+    public Optional<List<Task>> getAssessmentsBySubjectAndGroup(int groupId, int subjectId){
+        Optional<SubInGroup> subInGroup = subInGroupRepository.findById(new SubInGroupId(groupId, subjectId));
+        if(!subInGroup.isPresent()){
             return Optional.empty();
         }
-        List<Task> tasks = subInGroupRepository.findById(subId).get().getTasks();
-        return Optional.ofNullable(tasks);
-    }
-
-    public List<Assessment> addAllAssessments(List<Assessment> assessments){
-        List<Task> tasks = taskRepository.findAllById(assessments.stream().map(x -> x.getTask().getTaskKey()).distinct().collect(Collectors.toList()));
-        assessments.forEach(x -> x.setTask(tasks.stream().filter(task -> task.getTaskKey().equals(x.getTask().getTaskKey())).findFirst().get()));
-        return assessmentRepository.saveAll(assessments);
+        return Optional.of(subInGroup.get().getTasks());
     }
 
 }

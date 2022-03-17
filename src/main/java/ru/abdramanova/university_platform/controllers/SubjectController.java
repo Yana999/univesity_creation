@@ -6,62 +6,66 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import ru.abdramanova.university_platform.dto.PersonSimpleDTO;
+import ru.abdramanova.university_platform.dto.SubInGroupDTO;
+import ru.abdramanova.university_platform.dto.TeacherDTO;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.SubInGroup;
+import ru.abdramanova.university_platform.entity.SubInGroupId;
+import ru.abdramanova.university_platform.mappers.DTOMapper;
 import ru.abdramanova.university_platform.service.SubjectInGroupService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class SubjectController {
 
     private final SubjectInGroupService subjectInGroupService;
+    private final DTOMapper dtoMapper;
 
     @Autowired
-    public SubjectController(SubjectInGroupService subjectInGroupService) {
+    public SubjectController(SubjectInGroupService subjectInGroupService, DTOMapper dtoMapper) {
         this.subjectInGroupService = subjectInGroupService;
+        this.dtoMapper = dtoMapper;
     }
 
+    //для несуществующих id сделать notFound вместо пустого списка
     //получение списка студентов в группе для преподавателя и студента
     @PreAuthorize("hasAnyRole('ROLE_teacher', 'ROLE_student')")
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/group/student")
-    public ResponseEntity<Iterable<Person>> studentsInGroup(@Valid @RequestParam Integer groupId){
-        return ResponseEntity.ok(subjectInGroupService.getStudentGroup(groupId));
+    public List<PersonSimpleDTO> studentsInGroup(@Valid @RequestParam Integer groupId){
+        return dtoMapper.simplePersonListToDTO(subjectInGroupService.getStudentGroup(groupId));
     }
 
 
-    //добавление предметов админом
+    //сопоставление предметов преподавателю и предмету админом
     @PreAuthorize("hasRole('ROLE_admin')")
     @PostMapping("/subject/group")
     @ResponseStatus(HttpStatus.CREATED)
-    public SubInGroup addSubInGroup(@RequestBody SubInGroup subInGroup){
-        return subjectInGroupService.save(subInGroup).get();
+    public SubInGroupDTO addSubInGroup(@RequestBody SubInGroupDTO subInGroup){
+        return dtoMapper.subInGroupToDTO(subjectInGroupService.save(dtoMapper.subInGroupDTOtoSubInGroup(subInGroup)).get());
     }
-
-    //получение всех предметов в группах
-    @PreAuthorize("hasRole('ROLE_student')")
-    @GetMapping("/subject/group")
-    @ResponseStatus(HttpStatus.OK)
-    public Iterable<SubInGroup> getAllSubInGroup(){
-        return (subjectInGroupService.getAllSubInGroup());
-    }
-
 
     //удаление предметов админом
     @PreAuthorize("hasRole('ROLE_admin')")
     @DeleteMapping("/subject/group")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteSubInGroup(@RequestParam long subInGroupId){
-        subjectInGroupService.removeSubInGroup(subInGroupId);
+    public void deleteSubInGroup(@RequestParam int groupId, @RequestParam int subjectId){
+        subjectInGroupService.removeSubInGroup(groupId, subjectId );
     }
 
     //редактирование предметов админом
     @PreAuthorize("hasRole('ROLE_admin')")
-    @PutMapping
-    public ResponseEntity<SubInGroup> updatePerson(@RequestBody @Valid SubInGroup subInGroup,  Errors errors){
+    @PutMapping("/subject/group")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<SubInGroupDTO> updatePerson(@RequestBody @Valid SubInGroupDTO subInGroup,  Errors errors){
+        Optional<SubInGroup> sub = subjectInGroupService.update(dtoMapper.subInGroupDTOtoSubInGroup(subInGroup));
         if(!errors.hasErrors()){
-            if(subjectInGroupService.save(subInGroup).isPresent()){
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+            if(sub.isPresent()){
+                return ResponseEntity.of(Optional.of(dtoMapper.subInGroupToDTO(sub.get())));
             }
         }
         return ResponseEntity.badRequest().build();
