@@ -1,8 +1,10 @@
 package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.abdramanova.university_platform.entity.Assessment;
 import ru.abdramanova.university_platform.entity.SubInGroup;
 import ru.abdramanova.university_platform.entity.SubInGroupId;
 import ru.abdramanova.university_platform.entity.Task;
@@ -11,7 +13,9 @@ import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.SubInGroupRepository;
 import ru.abdramanova.university_platform.repositories.TaskRepository;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -30,6 +34,7 @@ public class TaskService {
         this.assessmentRepository = assessmentRepository;
     }
 
+    @Transactional
     public Task addTask(Task task){
         System.out.println(task.getSubInfo().getGroup().getGroupId());
         System.out.println(task.getSubInfo().getSubject().getSubjectId());
@@ -42,6 +47,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    @Transactional
     public Task updateTask(Task task){
         Optional<Task> curTask = taskRepository.findById(task.getId());
         if(!curTask.isPresent()){
@@ -56,6 +62,7 @@ public class TaskService {
         return taskRepository.save(t);
     }
 
+
     public Optional<List<Task>>  getTaskByGroupAndSubject(int groupId, int subjectId){
         Optional<SubInGroup> subInGroup = subInGroupRepository.findById(new SubInGroupId(groupId, subjectId));
         if (!subInGroup.isPresent()) {
@@ -65,12 +72,34 @@ public class TaskService {
         return Optional.ofNullable(tasks);
     }
 
+
     public Optional<List<Task>> getAssessmentsBySubjectAndGroup(int groupId, int subjectId){
         Optional<SubInGroup> subInGroup = subInGroupRepository.findById(new SubInGroupId(groupId, subjectId));
         if(!subInGroup.isPresent()){
             return Optional.empty();
         }
         return Optional.of(subInGroup.get().getTasks());
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class})
+    public List<Assessment> addAllAssessments (long taskId, List<Assessment> assessments) throws NoSuchElementException {
+        Optional<Task> task  = taskRepository.findById(taskId);
+        if (!task.isPresent()){
+            throw new NoSuchElementException("Cannot find related task");
+        }
+        assessments.stream().forEach(assess -> assess.setTask(task.get()));
+        return assessmentRepository.saveAll(assessments);
+    }
+
+    //сделать добавление одной оценки
+    //внутри проставления оценки можно сделать расчет за семестр на основании стандартных метрик
+    public Assessment updateAssessment(Assessment assessment) throws NoSuchElementException{
+        Optional<Assessment> asses = assessmentRepository.findById(assessment.getId());
+        if(!asses.isPresent()){
+            throw new NoSuchElementException("Cannot find updatable assessment");
+        }
+        asses.get().setAssessment(assessment.getAssessment());
+        return assessmentRepository.save(asses.get());
     }
 
 }

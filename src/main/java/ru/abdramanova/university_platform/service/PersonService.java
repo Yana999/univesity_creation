@@ -2,6 +2,7 @@ package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.PersonRole;
 import ru.abdramanova.university_platform.entity.StudyGroup;
@@ -12,6 +13,7 @@ import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -61,29 +63,32 @@ public class PersonService {
         return Optional.of(personRepository.save(person1));
     }
 
-    public Optional<Person> savePerson( Person person){
+    @Transactional
+    public Optional<Person> savePerson( Person person) throws NoSuchElementException {
 
         if(person.getStudyGroup().getName() == null){
             Optional<StudyGroup> studyGroup = studyGroupRepository.findById(person.getStudyGroup().getGroupId());
             if(studyGroup.isPresent()){
                 person.setStudyGroup(studyGroup.get());
             }else {
-                return Optional.empty();
+                throw new NoSuchElementException("No such group");
             }
         }
         if(person.getPersonRole().getName() == null) {
             Optional<PersonRole> personRole = personRoleRepository.findById(person.getPersonRole().getId());
             if (personRole.isPresent()) {
                 person.setPersonRole(personRole.get());
-            }else return Optional.empty();
+            }else throw new NoSuchElementException("No such role");;
         }
 
         return Optional.of(personRepository.save(person));
     }
 
+
     public Optional<List<Person>> findStudentsByAssessment(Integer assessment){
         return Optional.ofNullable(assessmentRepository.findStudentsByAssessment(assessment));
     }
+
 
     public Optional<List<Person>> findStudentBySurname(String surname){
         return personRepository.findStudentBySurname(surname);

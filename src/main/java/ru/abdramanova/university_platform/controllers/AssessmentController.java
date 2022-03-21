@@ -24,21 +24,22 @@ public class AssessmentController {
         this.dtoMapper = dtoMapper;
     }
 
-//    //Заполнение успеваемости для преподавателя
-//    @PreAuthorize("hasRole('ROLE_teacher')")
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void addAssessments(@RequestBody List<AssessmentDTO> assessments){
-//        taskService.addAllAssessments(dtoMapper.assessmentDTOListToAssessmentList(assessments));
-//        //сделать добавление только для одного задания
-//    }
-//
-//    //редактирование успеваемости для преподавателя
-//    @PreAuthorize("hasRole('ROLE_teacher')")
-//    @PutMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public void updateAssessments(@RequestBody List<AssessmentDTO> assessments){
-//        taskService.addAllAssessments(dtoMapper.assessmentDTOListToAssessmentList(assessments));
-//    }
+    //проверить
+    //Заполнение успеваемости для преподавателя
+    @PreAuthorize("hasRole('ROLE_teacher')")
+    @PostMapping("/{taskId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addAssessments(@PathVariable long taskId, @RequestBody List<AssessmentDTO> assessments){
+        taskService.addAllAssessments(taskId, dtoMapper.assessmentDTOListToAssessmentList(assessments));
+        //сделать добавление только для одного задания
+    }
+
+    //редактирование успеваемости для преподавателя
+    @PreAuthorize("hasRole('ROLE_teacher')")
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public AssessmentDTO updateAssessment(@RequestBody AssessmentDTO assessment){
+       return dtoMapper.assessmentToDTO(taskService.updateAssessment(dtoMapper.assessmentDTOtoAssessment(assessment)));
+    }
 
 }

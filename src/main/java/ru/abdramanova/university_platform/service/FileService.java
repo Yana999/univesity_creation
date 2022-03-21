@@ -2,6 +2,7 @@ package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.abdramanova.university_platform.entity.Material;
@@ -23,6 +24,7 @@ public class FileService {
         this.taskRepository = taskRepository;
     }
 
+    @Transactional
     public boolean save (MultipartFile file){
         try {
             Material material = new Material();
@@ -41,8 +43,7 @@ public class FileService {
     }
 
     public List<Material> getFilesByTask(Long taskId){
-        //return taskRepository.findById(taskId).get().getMaterials();
-        return null;
+        return taskRepository.findById(taskId).get().getMaterials();
     }
 
     public List<Material> getAllFiles() {

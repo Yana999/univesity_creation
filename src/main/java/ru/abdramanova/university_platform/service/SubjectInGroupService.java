@@ -2,6 +2,7 @@ package ru.abdramanova.university_platform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.abdramanova.university_platform.entity.*;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.StudyGroupRepository;
@@ -70,5 +71,11 @@ public class SubjectInGroupService {
 
     public void removeSubInGroup(int groupId, int subjectId){
         subInGroupRepository.deleteById(new SubInGroupId(groupId, subjectId));
+    }
+
+    //сделать добавление внутри связи предмета с группой
+    @Transactional()
+    public Subject addSubject(Subject subject){
+        return subjectRepository.save(subject);
     }
 }
