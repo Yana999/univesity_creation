@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.abdramanova.university_platform.entity.Assessment;
-import ru.abdramanova.university_platform.entity.SubInGroup;
-import ru.abdramanova.university_platform.entity.SubInGroupId;
-import ru.abdramanova.university_platform.entity.Task;
+import ru.abdramanova.university_platform.entity.*;
 import ru.abdramanova.university_platform.repositories.AssessmentRepository;
 import ru.abdramanova.university_platform.repositories.PersonRepository;
 import ru.abdramanova.university_platform.repositories.SubInGroupRepository;
@@ -73,7 +70,7 @@ public class TaskService {
     }
 
 
-    public Optional<List<Task>> getAssessmentsBySubjectAndGroup(int groupId, int subjectId){
+    public Optional<List<Task>> getTasksBySubjectAndGroup(int groupId, int subjectId){
         Optional<SubInGroup> subInGroup = subInGroupRepository.findById(new SubInGroupId(groupId, subjectId));
         if(!subInGroup.isPresent()){
             return Optional.empty();
@@ -81,17 +78,23 @@ public class TaskService {
         return Optional.of(subInGroup.get().getTasks());
     }
 
-    @Transactional(rollbackFor = {RuntimeException.class})
+    @Transactional(rollbackFor = {RuntimeException.class, NoSuchElementException.class})
     public List<Assessment> addAllAssessments (long taskId, List<Assessment> assessments) throws NoSuchElementException {
         Optional<Task> task  = taskRepository.findById(taskId);
         if (!task.isPresent()){
             throw new NoSuchElementException("Cannot find related task");
         }
         assessments.stream().forEach(assess -> assess.setTask(task.get()));
+        for (int i = 0; i < assessments.size(); ++i) {
+            Optional<Person> student = personRepository.findById(assessments.get(i).getStudent().getId());
+            if(student.isPresent()){
+                assessments.get(i).setStudent(student.get());
+            }else throw new NoSuchElementException("No such student");
+        }
         return assessmentRepository.saveAll(assessments);
     }
 
-    //сделать добавление одной оценки
+
     //внутри проставления оценки можно сделать расчет за семестр на основании стандартных метрик
     public Assessment updateAssessment(Assessment assessment) throws NoSuchElementException{
         Optional<Assessment> asses = assessmentRepository.findById(assessment.getId());
@@ -100,6 +103,15 @@ public class TaskService {
         }
         asses.get().setAssessment(assessment.getAssessment());
         return assessmentRepository.save(asses.get());
+    }
+
+    public Assessment addAssessment(Long taskId, Assessment assessment) throws NoSuchElementException{
+        Optional<Task> task = taskRepository.findById(taskId);
+        if(!task.isPresent()){
+            throw new NoSuchElementException("No such Task");
+        }
+        assessment.setTask(task.get());
+        return assessmentRepository.save(assessment);
     }
 
 }

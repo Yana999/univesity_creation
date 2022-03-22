@@ -8,10 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.dto.PersonSimpleDTO;
 import ru.abdramanova.university_platform.dto.SubInGroupDTO;
-import ru.abdramanova.university_platform.dto.TeacherDTO;
-import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.entity.SubInGroup;
-import ru.abdramanova.university_platform.entity.SubInGroupId;
 import ru.abdramanova.university_platform.mappers.DTOMapper;
 import ru.abdramanova.university_platform.service.SubjectInGroupService;
 

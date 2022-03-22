@@ -9,8 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.dto.PersonDTO;
+import ru.abdramanova.university_platform.dto.PersonShortDTO;
 import ru.abdramanova.university_platform.dto.PersonSimpleDTO;
-import ru.abdramanova.university_platform.dto.TeacherDTO;
 import ru.abdramanova.university_platform.entity.Person;
 import ru.abdramanova.university_platform.mappers.DTOMapper;
 import ru.abdramanova.university_platform.service.AuthService;
@@ -45,7 +45,7 @@ public class PersonController {
     @PreAuthorize("permitAll()")
     @GetMapping("/teachers")
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<TeacherDTO> allTeachers(){
+    public Iterable<PersonShortDTO> allTeachers(){
         return personService.getTeachers().stream().map(dtoMapper::teacherToDTO).collect(Collectors.toList());
     }
 

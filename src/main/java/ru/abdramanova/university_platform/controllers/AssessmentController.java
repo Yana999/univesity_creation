@@ -5,14 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.abdramanova.university_platform.dto.AssessmentDTO;
-import ru.abdramanova.university_platform.entity.Assessment;
 import ru.abdramanova.university_platform.mappers.DTOMapper;
 import ru.abdramanova.university_platform.service.TaskService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/assessments")
+@RequestMapping("/assessment")
 public class AssessmentController {
 
     private final TaskService taskService;
@@ -41,5 +40,7 @@ public class AssessmentController {
     public AssessmentDTO updateAssessment(@RequestBody AssessmentDTO assessment){
        return dtoMapper.assessmentToDTO(taskService.updateAssessment(dtoMapper.assessmentDTOtoAssessment(assessment)));
     }
+
+
 
 }

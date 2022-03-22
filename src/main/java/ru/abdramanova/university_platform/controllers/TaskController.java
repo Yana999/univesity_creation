@@ -74,7 +74,7 @@ public class TaskController {
     @GetMapping("/assessments")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskWithAssessmentsDTO> getTasksForTeacher(@RequestParam Integer groupId, Integer subjectId){
-        return dtoMapper.taskWithAssessToDTO(taskService.getAssessmentsBySubjectAndGroup(groupId, subjectId).get());
+        return dtoMapper.taskWithAssessToDTO(taskService.getTasksBySubjectAndGroup(groupId, subjectId).get());
     }
 
     //получение файлов материалов для преподавателей и студентов
@@ -111,6 +111,13 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_teacher')")
+    @PostMapping("/{taskId}/assessment")
+    @ResponseStatus(HttpStatus.OK)
+    public AssessmentDTO addAssessment(@PathVariable Long taskId, @RequestBody AssessmentDTO assessment){
+        return dtoMapper.assessmentToDTO(taskService.addAssessment(taskId, dtoMapper.assessmentDTOtoAssessment(assessment)));
     }
 
 }

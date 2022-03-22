@@ -25,8 +25,8 @@ public interface DTOMapper {
     Person simplePersonDTOtoPerson(PersonSimpleDTO personSimpleDTO);
     List<PersonSimpleDTO> simplePersonListToDTO(List<Person> people);
 
-    TeacherDTO teacherToDTO (Person person);
-    Person teacherDTOtoPerson(TeacherDTO simpleUserDTO);
+    PersonShortDTO teacherToDTO (Person person);
+    Person teacherDTOtoPerson(PersonShortDTO simpleUserDTO);
 
     Person personDTOtoPerson(PersonDTO personDTO);
     PersonDTO personToPersonDTO(Person person);

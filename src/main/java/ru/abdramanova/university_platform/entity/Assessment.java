@@ -1,6 +1,5 @@
 package ru.abdramanova.university_platform.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,13 +40,13 @@ public class Assessment  implements Serializable {
     @Column(nullable = false)
     private LocalDateTime time;
     @ManyToOne(cascade = CascadeType.REMOVE)
-    private Person user;
+    private Person student;
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Task task;
 
-    public Assessment(int assessment, Person user, Task task) {
+    public Assessment(int assessment, Person student, Task task) {
         this.assessment = assessment;
-        this.user = user;
+        this.student = student;
         this.task = task;
     }
 }
