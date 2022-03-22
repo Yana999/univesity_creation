@@ -70,7 +70,7 @@ public class TaskController {
     }
 
     //просмотр дз с оценками всех студентов для преподавателя по заданию в конкретной группе
-    @PreAuthorize("hasAnyRole('ROLE_teacher')")
+    @PreAuthorize("hasAnyRole('ROLE_teacher', 'ROLE_teacher')")
     @GetMapping("/assessments")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskWithAssessmentsDTO> getTasksForTeacher(@RequestParam Integer groupId, Integer subjectId){
@@ -93,6 +93,7 @@ public class TaskController {
     }
 
     //получение списка всех материалов
+    @RolesAllowed({"ROLE_student", "ROLE_teacher"})
     @GetMapping("/material")
     public List<MaterialUrlDTO> list() {
         return dtoMapper.materialListUrlToDTO(materialService.getAllFiles());
@@ -118,6 +119,21 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public AssessmentDTO addAssessment(@PathVariable Long taskId, @RequestBody AssessmentDTO assessment){
         return dtoMapper.assessmentToDTO(taskService.addAssessment(taskId, dtoMapper.assessmentDTOtoAssessment(assessment)));
+    }
+
+    @PreAuthorize("hasRole('ROLE_teacher')")
+    @PostMapping("/{taskId}/assessments")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AssessmentDTO> addAssessments(@PathVariable Long taskId, @RequestBody List<AssessmentDTO> assessment){
+        return dtoMapper.assessmentListToDTOList(taskService.addAllAssessments(taskId, dtoMapper.assessmentDTOListToAssessmentList(assessment)));
+    }
+
+    //редактирование успеваемости для преподавателя
+    @PreAuthorize("hasRole('ROLE_teacher')")
+    @PutMapping("/{taskId}/assessment")
+    @ResponseStatus(HttpStatus.OK)
+    public AssessmentDTO updateAssessment(@PathVariable Long taskId, @RequestBody AssessmentDTO assessment){
+        return dtoMapper.assessmentToDTO(taskService.updateAssessment(taskId, dtoMapper.assessmentDTOtoAssessment(assessment)));
     }
 
 }

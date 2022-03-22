@@ -14,6 +14,7 @@ public interface DTOMapper {
     AssessmentDTO assessmentToDTO(Assessment assessment);
     Assessment assessmentDTOtoAssessment(AssessmentDTO assessmentDTO);
     List<Assessment> assessmentDTOListToAssessmentList (List<AssessmentDTO> assessments);
+    List<AssessmentDTO> assessmentListToDTOList(List<Assessment> assessments);
 
     ControlFormDTO controlFormToDTO(ControlFormDict controlFormDict);
     ControlFormDict controlFormDTOtoControlForm(ControlFormDTO controlFormDTO);

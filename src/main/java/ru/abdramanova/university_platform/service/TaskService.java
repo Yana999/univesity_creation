@@ -96,8 +96,8 @@ public class TaskService {
 
 
     //внутри проставления оценки можно сделать расчет за семестр на основании стандартных метрик
-    public Assessment updateAssessment(Assessment assessment) throws NoSuchElementException{
-        Optional<Assessment> asses = assessmentRepository.findById(assessment.getId());
+    public Assessment updateAssessment(Long taskId, Assessment assessment) throws NoSuchElementException{
+        Optional<Assessment> asses = assessmentRepository.findById(taskId);
         if(!asses.isPresent()){
             throw new NoSuchElementException("Cannot find updatable assessment");
         }
@@ -107,6 +107,7 @@ public class TaskService {
 
     public Assessment addAssessment(Long taskId, Assessment assessment) throws NoSuchElementException{
         Optional<Task> task = taskRepository.findById(taskId);
+        //Optional<Assessment> student = task.get().getAssessments().stream().filter(x -> x.getStudent().getId().equals(assessment.getStudent().getId())).findAny();
         if(!task.isPresent()){
             throw new NoSuchElementException("No such Task");
         }
