@@ -27,19 +27,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/person")
 public class PersonController {
 
-    private final PersonService personService;
-    private final AuthService authController;
-    private final DTOMapper dtoMapper;
-
     @Autowired
-    Environment environment;
-
+    private PersonService personService;
     @Autowired
-    public PersonController(PersonService personService, AuthService authController, DTOMapper dtoMapper) {
-        this.personService = personService;
-        this.authController = authController;
-        this.dtoMapper = dtoMapper;
-    }
+    private AuthService authController;
+    @Autowired
+    private DTOMapper dtoMapper;
+
+//    @Autowired
+//    public PersonController(PersonService personService, AuthService authController, DTOMapper dtoMapper) {
+//        this.personService = personService;
+//        this.authController = authController;
+//        this.dtoMapper = dtoMapper;
+//    }
 
     //выборка всех преподавателей
     @PreAuthorize("permitAll()")
@@ -133,12 +133,5 @@ public class PersonController {
     @ResponseStatus(HttpStatus.OK)
     public List<PersonSimpleDTO> withAssessment (@Valid @RequestParam Integer assessment){
         return dtoMapper.simplePersonListToDTO(personService.findStudentsByAssessment(assessment).get());
-    }
-
-    @PreAuthorize("permitAll()")
-    @GetMapping("/en")
-    @ResponseStatus(HttpStatus.OK)
-    public String[] env(){
-        return environment.getActiveProfiles();
     }
 }

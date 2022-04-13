@@ -1,6 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonRole {
 
     @Id
@@ -38,6 +40,11 @@ public class PersonRole {
                 ", name='" + name + '\'' +
                 ", people=" + people +
                 '}';
+    }
+
+    public PersonRole(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public PersonRole(String name) {

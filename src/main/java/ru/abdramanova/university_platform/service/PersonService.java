@@ -36,7 +36,7 @@ public class PersonService {
     public List<Person> getTeachers(){
         Optional<PersonRole> teachers = personRoleRepository.findPersonRoleByNameIgnoreCase("teacher");
         if(teachers.isPresent()){
-            return personRoleRepository.findPersonRoleByNameIgnoreCase("teacher").get().getPeople();
+            return teachers.get().getPeople();
         }
         return Collections.emptyList();
     }

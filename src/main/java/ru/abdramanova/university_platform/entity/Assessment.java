@@ -34,7 +34,6 @@ public class Assessment  implements Serializable {
     )
     private Long id;
     @Column(nullable = false)
-    @Range(min = -1, max = 101)
     private int assessment;
     @UpdateTimestamp
     @Column(nullable = false)

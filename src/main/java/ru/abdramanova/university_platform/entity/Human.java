@@ -1,6 +1,7 @@
 package ru.abdramanova.university_platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public abstract class Human {
 
     @Id

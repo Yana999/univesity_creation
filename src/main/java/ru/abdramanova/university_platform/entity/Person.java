@@ -1,5 +1,6 @@
 package ru.abdramanova.university_platform.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Person extends Human implements UserDetails {
 
     @Column(nullable = false, length = 11)
@@ -45,37 +47,12 @@ public class Person extends Human implements UserDetails {
         this.personRole = personRole;
     }
 
-//    public String getPhoneNumber() {
-//        return phoneNumber;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public StudyGroup getStudyGroup() {
-//        return studyGroup;
-//    }
-//
-//    public void setStudyGroup(StudyGroup studyGroup) {
-//        this.studyGroup = studyGroup;
-//    }
-//
-//    public PersonRole getPersonRole() {
-//        return personRole;
-//    }
-//
-//    public void setPersonRole(PersonRole personRole) {
-//        this.personRole = personRole;
-//    }
+    public Person(String surname, String name, String secondName, String password, String login, String phoneNumber, String email) {
+        super(surname, name, secondName, password, login);
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.studyGroup = studyGroup;
+    }
 
     @Override
     public String toString() {
@@ -88,6 +65,8 @@ public class Person extends Human implements UserDetails {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
