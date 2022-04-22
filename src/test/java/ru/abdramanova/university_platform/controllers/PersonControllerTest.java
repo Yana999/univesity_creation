@@ -100,6 +100,7 @@ class PersonControllerTest {
 
     @Test
     void personById() {
+        System.out.println("hello");
     }
 
     @Test
